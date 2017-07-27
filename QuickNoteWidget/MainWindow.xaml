@@ -1,0 +1,229 @@
+﻿<Window x:Class="QuickNoteWidget.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:QuickNoteWidget"
+        xmlns:tb="http://www.hardcodet.net/taskbar"
+        Topmost="{Binding OnTop}"
+        ShowInTaskbar="False"
+        xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
+        mc:Ignorable="d"
+        WindowStyle="None"
+        Title="MainWindow"
+        Height="349"
+        Width="447">
+    <Window.ContextMenu>
+        <ContextMenu>
+            <MenuItem Header="Minimieren"
+                      Click="contextMinimize_Click" />
+            <MenuItem Header="Wiederherstellen"
+                      Click="contextMaximize_Click" />
+            <MenuItem Header="Beenden"
+                      Click="contextClose_Click" />
+            <MenuItem Header="Einstellungen">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="13*" />
+                        <ColumnDefinition Width="42*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Thema:"
+                               VerticalAlignment="Center"
+                               Grid.Row="0" />
+                    <ComboBox mahapps:TextBoxHelper.Watermark="Thema"
+                              ItemsSource="{Binding Themes}"
+                              SelectedItem="{Binding SelectedTheme, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                              HorizontalAlignment="Stretch"
+                              DisplayMemberPath="Name"
+                              Height="23"
+                              Margin="5,0,5,0"
+                              Grid.Column="1"
+                              Grid.Row="0" />
+                    <TextBlock Text="Akzent:"
+                               VerticalAlignment="Center"
+                               Grid.Row="1" />
+                    <ComboBox mahapps:TextBoxHelper.Watermark="Thema"
+                              ItemsSource="{Binding Accents}"
+                              SelectedItem="{Binding SelectedAccent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                              HorizontalAlignment="Stretch"
+                              DisplayMemberPath="Name"
+                              Height="23"
+                              Margin="5,0,5,0"
+                              Grid.Column="1"
+                              Grid.Row="1" />
+                </Grid>
+                <CheckBox Content="On Top"
+                          IsChecked="{Binding OnTop}" />
+            </MenuItem>
+        </ContextMenu>
+    </Window.ContextMenu>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="112*" />
+            <ColumnDefinition Width="100*" />
+            <ColumnDefinition Width="2" />
+            <ColumnDefinition Width="219*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="61*" />
+        </Grid.RowDefinitions>
+        <TextBox mahapps:TextBoxHelper.Watermark="Single Line"
+                 mahapps:TextBoxHelper.ClearTextButton="True"
+                 x:Name="tbxSingleLine"
+                 AllowDrop="True"
+                 Text="{Binding SingleLine, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 Grid.ColumnSpan="4"
+                 Grid.Row="0"
+                 Margin="10,10,57,0"
+                 Height="28"
+                 VerticalAlignment="Top" />
+        <Button Margin="0,10,10,0"
+                Content="Copy"
+                Grid.Column="3"
+                x:Name="btnCopySingleLine"
+                HorizontalAlignment="Right"
+                Width="42"
+                Height="28"
+                VerticalAlignment="Top"
+                Grid.Row="0"
+                Click="btnCopySingleLine_Click" />
+        <TextBox x:Name="tbxMultiLine"
+                 Margin="10,10,4,81"
+                 TextWrapping="WrapWithOverflow"
+                 Grid.Column="0"
+                 Grid.Row="1"
+                 AcceptsReturn="True"
+                 AcceptsTab="True"
+                 AllowDrop="True"
+                 mahapps:TextBoxHelper.ClearTextButton="True"
+                 Text="{Binding MultiLine, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 mahapps:TextBoxHelper.Watermark="Multi Line"
+                 Grid.ColumnSpan="2" />
+        <Button Margin="10,0,4,48"
+                Content="Copy"
+                Height="28"
+                x:Name="btnCopyMultiLine"
+                VerticalAlignment="Bottom"
+                Grid.Row="1"
+                Grid.Column="0"
+                Click="btnCopyMultiLine_Click"
+                Grid.ColumnSpan="2" />
+        <Button Margin="10,0,10,15"
+                Content="Load File"
+                Height="28"
+                x:Name="btnLoadFromFile"
+                VerticalAlignment="Bottom"
+                Grid.Row="1"
+                Grid.Column="0"
+                Click="btnLoadFromFile_OnClick" />
+        <Button Margin="10,0,4,15"
+                Content="Save File"
+                Height="28"
+                x:Name="btnSaveToFile"
+                VerticalAlignment="Bottom"
+                Grid.Row="1"
+                Grid.Column="1"
+                Click="btnSaveToFile_Click" />
+        <GridSplitter Grid.Column="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" 
+                      Grid.Row="1" />
+        <Border Margin="10,10,10,48"
+                BorderThickness="1"
+                BorderBrush="{Binding SelectedAccent}"
+                Grid.Column="3"
+                Grid.Row="1">
+            <ListView x:Name="listBox"
+                      ItemsSource="{Binding CheckItems}"
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <CheckBox IsChecked="{Binding IsChecked}"
+                                  Content="{Binding Description}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                <ListView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Clear"
+                                  Command="{Binding ClearCheckListCommand}" />
+                    </ContextMenu>
+                </ListView.ContextMenu>
+            </ListView>
+        </Border>
+        <TextBox Margin="13,0,57,15"
+                 mahapps:TextBoxHelper.ClearTextButton="True"
+                 Height="28"
+                 VerticalAlignment="Bottom"
+                 Text="{Binding AddEntry, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                 Grid.Row="1"
+                 Grid.Column="3"
+                 mahapps:TextBoxHelper.Watermark="Add New" />
+        <Button Command="{Binding AddToListCommand}"
+                IsDefault="True"
+                Grid.Row="1"
+                Grid.Column="3"
+                Content="Add"
+                Margin="0,0,10,15"
+                Height="28"
+                VerticalAlignment="Bottom"
+                HorizontalAlignment="Right"
+                Width="42" />
+        <tb:TaskbarIcon IconSource=".\Clipboard.ico"
+                        x:Name="TaskbarIcon"
+                        Grid.RowSpan="2"
+                        Grid.ColumnSpan="4">
+            <tb:TaskbarIcon.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Minimieren"
+                              Click="contextMinimize_Click" />
+                    <MenuItem Header="Wiederherstellen"
+                              Click="contextMaximize_Click" />
+                    <MenuItem Header="Beenden"
+                              Click="contextClose_Click" />
+                    <MenuItem Header="Einstellungen">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40" />
+                                <RowDefinition Height="40" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="13*" />
+                                <ColumnDefinition Width="42*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Thema:"
+                                       VerticalAlignment="Center"
+                                       Grid.Row="0" />
+                            <ComboBox mahapps:TextBoxHelper.Watermark="Thema"
+                                      ItemsSource="{Binding Themes}"
+                                      SelectedItem="{Binding SelectedTheme, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                      HorizontalAlignment="Stretch"
+                                      DisplayMemberPath="Name"
+                                      Height="23"
+                                      Margin="5,0,5,0"
+                                      Grid.Column="1"
+                                      Grid.Row="0" />
+                            <TextBlock Text="Akzent:"
+                                       VerticalAlignment="Center"
+                                       Grid.Row="1" />
+                            <ComboBox mahapps:TextBoxHelper.Watermark="Akzent"
+                                      ItemsSource="{Binding Accents}"
+                                      SelectedItem="{Binding SelectedAccent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                      HorizontalAlignment="Stretch"
+                                      DisplayMemberPath="Name"
+                                      Height="23"
+                                      Margin="5,0,5,0"
+                                      Grid.Column="1"
+                                      Grid.Row="1" />
+                        </Grid>
+                        <CheckBox Content="On Top"
+                                  IsChecked="{Binding OnTop}" />
+                    </MenuItem>
+                </ContextMenu>
+            </tb:TaskbarIcon.ContextMenu>
+        </tb:TaskbarIcon>
+    </Grid>
+</Window>
