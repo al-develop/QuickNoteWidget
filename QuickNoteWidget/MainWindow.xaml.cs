@@ -104,5 +104,11 @@ namespace QuickNoteWidget
                 }
             }
         }
+
+        private void Info_Click(object sender, RoutedEventArgs e)
+        {
+            var info = new InfoWindow();
+            info.Show();
+        }
     }
 }

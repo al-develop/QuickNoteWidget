@@ -59,6 +59,8 @@
                 <CheckBox Content="On Top"
                           IsChecked="{Binding OnTop}" />
             </MenuItem>
+            <MenuItem Header="Info"
+                      Click="Info_Click" />
         </ContextMenu>
     </Window.ContextMenu>
     <Grid>
@@ -222,6 +224,8 @@
                         <CheckBox Content="On Top"
                                   IsChecked="{Binding OnTop}" />
                     </MenuItem>
+                    <MenuItem Header="Info"
+                              Click="Info_Click" />
                 </ContextMenu>
             </tb:TaskbarIcon.ContextMenu>
         </tb:TaskbarIcon>
