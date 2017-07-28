@@ -2,7 +2,7 @@
 A Windows Desktop Widget, build with WPF. It's basically a little notepad, where you can store Texts for later use (Like a memo). 
 You can store single-line notes, mulit-line notes (which you can also save to and load from a file) and create lists.   
 
-
+![preview](https://github.com/al-develop/QuickNoteWidget/blob/master/QuickNoteWidget.png)
 
 # How do I control that thing??
 The whole controlling of the UI goes over context menus, there's no border for a widget.
