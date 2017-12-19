@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:QuickNoteWidget"
         xmlns:tb="http://www.hardcodet.net/taskbar"
+        xmlns:converter="clr-namespace:QuickNoteWidget.Converter"
         Topmost="{Binding OnTop}"
         ShowInTaskbar="False"
         xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
@@ -63,12 +64,16 @@
                       Click="Info_Click" />
         </ContextMenu>
     </Window.ContextMenu>
+    <Window.Resources>
+        <converter:StringToFontStyleConverter x:Key="fontStyle" />
+        <converter:StringToTextDecorationConverter x:Key="textDeco" />
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="112*" />
-            <ColumnDefinition Width="100*" />
+            <ColumnDefinition Width="200*" />
+            <ColumnDefinition Width="200*" />
             <ColumnDefinition Width="2" />
-            <ColumnDefinition Width="219*" />
+            <ColumnDefinition Width="150*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
@@ -76,6 +81,7 @@
         </Grid.RowDefinitions>
         <TextBox mahapps:TextBoxHelper.Watermark="Single Line"
                  mahapps:TextBoxHelper.ClearTextButton="True"
+                 mahapps:TextBoxHelper.SelectAllOnFocus="True"
                  x:Name="tbxSingleLine"
                  AllowDrop="True"
                  Text="{Binding SingleLine, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -103,6 +109,7 @@
                  AcceptsTab="True"
                  AllowDrop="True"
                  mahapps:TextBoxHelper.ClearTextButton="True"
+                 mahapps:TextBoxHelper.SelectAllOnFocus="True"
                  Text="{Binding MultiLine, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  mahapps:TextBoxHelper.Watermark="Multi Line"
                  Grid.ColumnSpan="2" />
@@ -131,7 +138,9 @@
                 Grid.Row="1"
                 Grid.Column="1"
                 Click="btnSaveToFile_Click" />
-        <GridSplitter Grid.Column="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" 
+        <GridSplitter Grid.Column="2"
+                      VerticalAlignment="Stretch"
+                      HorizontalAlignment="Stretch"
                       Grid.Row="1" />
         <Border Margin="10,10,10,48"
                 BorderThickness="1"
@@ -140,12 +149,26 @@
                 Grid.Row="1">
             <ListView x:Name="listBox"
                       ItemsSource="{Binding CheckItems}"
+                      SelectionChanged="listBox_SelectionChanged"
                       HorizontalAlignment="Stretch"
                       VerticalAlignment="Stretch">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <CheckBox IsChecked="{Binding IsChecked}"
-                                  Content="{Binding Description}" />
+                        <StackPanel Orientation="Horizontal" x:Name="stpCbxWrapper">
+                            <CheckBox IsChecked="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                      Content="{Binding Description}"
+                                      x:Name="cbx"
+                                      
+                                      
+                                      Foreground="{Binding Foreground, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                      BorderBrush="{Binding BorderBrush, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                      />
+                            <TextBlock Text="{Binding Description}"
+                                       TextDecorations="{Binding tbxTextDecorations, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource fontStyle}}"
+                                       FontStyle="{Binding tbxFontStyle, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource textDeco}}"
+                                       Foreground="{Binding tbxForeground, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                       x:Name="tbxContent" />
+                        </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
                 <ListView.ContextMenu>

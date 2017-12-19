@@ -142,5 +142,66 @@ namespace QuickNoteWidget
 
         #endregion Settings
 
+
+        private bool _isChecked;
+        private string _borderBrush;
+        private string _foreground;
+        private string _tbxForeground;
+        private string _tbxFontStyle;
+        private string _tbxTextDecorations;
+
+        public string tbxTextDecorations
+        {
+            get { return _tbxTextDecorations; }
+            set { SetProperty(ref _tbxTextDecorations, value, () => tbxTextDecorations); }
+        }
+        public string tbxFontStyle
+        {
+            get { return _tbxFontStyle; }
+            set { SetProperty(ref _tbxFontStyle, value, () => tbxFontStyle); }
+        }
+        public string tbxForeground
+        {
+            get { return _tbxForeground; }
+            set { SetProperty(ref _tbxForeground, value, () => tbxForeground); }
+        }
+        public string Foreground
+        {
+            get { return _foreground; }
+            set { SetProperty(ref _foreground, value, () => Foreground); }
+        }
+        public string BorderBrush
+        {
+            get { return _borderBrush; }
+            set { SetProperty(ref _borderBrush, value, () => BorderBrush); }
+        }
+        public bool IsChecked
+        {
+            get { return _isChecked; }
+            set { SetProperty(ref _isChecked, value, () => IsChecked); }
+        }
+
+        public void stpCbxWrapper_MouseDown()
+        {
+            if (IsChecked != null && IsChecked == true)
+            {
+                IsChecked = false;
+                BorderBrush = "Black";
+
+                tbxForeground = "Black";
+                tbxFontStyle = "Normal";
+                tbxTextDecorations = null;
+            }
+            else
+            {
+                IsChecked = true;
+                BorderBrush = "Gray";
+                Foreground = "Gray";
+
+                tbxForeground = "Gray";
+                tbxFontStyle = "Italic";
+                tbxTextDecorations = "Strikethrough";
+            }
+        }
     }
 }

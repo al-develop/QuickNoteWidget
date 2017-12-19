@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Media;
 using OpenFolderDialog;
 using Application = System.Windows.Application;
 using Clipboard = System.Windows.Clipboard;
@@ -109,6 +110,12 @@ namespace QuickNoteWidget
         {
             var info = new InfoWindow();
             info.Show();
+        }
+
+        private void listBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            _mainWindowViewModel.stpCbxWrapper_MouseDown();
+
         }
     }
 }
