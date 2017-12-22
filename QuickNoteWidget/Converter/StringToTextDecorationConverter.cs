@@ -13,14 +13,18 @@ namespace QuickNoteWidget.Converter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            switch (value.ToString())
+            if (value != null)
             {
-                case "Strikethrough":
-                    return TextDecorations.Strikethrough;
-                default:
-                    return null;
+                switch (value.ToString())
+                {
+                    case "Strikethrough":
+                        return TextDecorations.Strikethrough;
+                    default:
+                        return DependencyProperty.UnsetValue;
 
+                }
             }
+            return DependencyProperty.UnsetValue;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
