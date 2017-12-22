@@ -1,9 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
-using System.Windows.Forms;
 using System.Windows.Input;
-using System.Windows.Media;
-using OpenFolderDialog;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using Application = System.Windows.Application;
 using Clipboard = System.Windows.Clipboard;
 using DataFormats = System.Windows.DataFormats;
@@ -64,43 +63,52 @@ namespace QuickNoteWidget
 
         private void btnSaveToFile_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new FolderSelectDialog();
-            dialog.ShowDialog();
-            string selection = dialog.FileName;
-
-            using (var file = new System.IO.StreamWriter($"{selection}\\QuickNoteWidget_{DateTime.Now.ToShortDateString()}.txt", true))
+            using (var dialog = new CommonOpenFileDialog())
             {
-                file.WriteLine(tbxMultiLine.Text);
+                dialog.IsFolderPicker = true;
+                dialog.Multiselect = false;
+                if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+                {
+                    string selection = dialog.FileNames.FirstOrDefault();
+
+                    using (var file = new System.IO.StreamWriter($"{selection}\\QuickNoteWidget_{DateTime.Now.ToShortDateString()}.txt", true))
+                    {
+                        file.WriteLine(tbxMultiLine.Text);
+                    }
+                }
             }
         }
 
         private void btnLoadFromFile_OnClick(object sender, RoutedEventArgs e)
         {
-            var dialog = new OpenFileDialog();
-            dialog.Filter = "Text Files | *.txt";
-            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            using (var dialog = new CommonOpenFileDialog())
             {
-                string filePath = dialog.FileName;
-                string textContent = System.IO.File.ReadAllText(filePath);
-                if (!string.IsNullOrEmpty(tbxMultiLine.Text))
+                dialog.Multiselect = false;
+                dialog.Filters.Add(new CommonFileDialogFilter("Text Files", "*.txt"));
+                if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
                 {
-                    MessageBoxResult keepContent = System.Windows.MessageBox.Show("Override existing content?",
-                                                                                  "Content is not empty",
-                                                                                  MessageBoxButton.YesNoCancel,
-                                                                                  MessageBoxImage.Question);
-
-                    switch (keepContent)
+                    string filePath = dialog.FileName;
+                    string textContent = System.IO.File.ReadAllText(filePath);
+                    if (!string.IsNullOrEmpty(tbxMultiLine.Text))
                     {
-                        case MessageBoxResult.Yes:
-                            tbxMultiLine.Text = textContent;
-                            break;
+                        MessageBoxResult keepContent = System.Windows.MessageBox.Show("Override existing content?",
+                            "Content is not empty",
+                            MessageBoxButton.YesNoCancel,
+                            MessageBoxImage.Question);
 
-                        case MessageBoxResult.No:
-                            tbxMultiLine.Text += textContent;
-                            break;
+                        switch (keepContent)
+                        {
+                            case MessageBoxResult.Yes:
+                                tbxMultiLine.Text = textContent;
+                                break;
 
-                        default:
-                            return;
+                            case MessageBoxResult.No:
+                                tbxMultiLine.Text += textContent;
+                                break;
+
+                            default:
+                                return;
+                        }
                     }
                 }
             }
