@@ -50,9 +50,9 @@ namespace QuickNoteWidget
         {
             AddToListCommand = new DelegateCommand(AddToList);
             ClearCheckListCommand = new DelegateCommand(ClearCheckList);
-            SingleLine = null;
-            MultiLine = null;
-            AddEntry = null;
+            SingleLine = "";
+            MultiLine = "";
+            AddEntry = "";
             CheckItems = new ObservableCollection<CheckItemTemplate>();
             OnTop = Settings.OnTop;
 

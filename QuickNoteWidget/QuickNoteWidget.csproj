@@ -91,8 +91,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="CheckItemTemplate.cs" />
+    <Compile Include="Converter\AccentToColorConverter.cs" />
     <Compile Include="Converter\StringToFontStyleConverter.cs" />
     <Compile Include="Converter\StringToTextDecorationConverter.cs" />
+    <Compile Include="Converter\StringToTextDocumentConverter.cs" />
     <Compile Include="InfoWindow.xaml.cs">
       <DependentUpon>InfoWindow.xaml</DependentUpon>
     </Compile>

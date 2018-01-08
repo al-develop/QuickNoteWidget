@@ -9,7 +9,7 @@
         Topmost="True"
         ResizeMode="NoResize"
         Title="InfoWindow"
-        Height="201"
+        Height="213"
         Width="275">
     <Border BorderBrush="Black" BorderThickness="1">
         <Grid>
@@ -48,6 +48,8 @@
                 Margin="10,0,10,10"
                 x:Name="btnClose"
                 Click="btnClose_Click" />
-    </Grid>
+            <TextBlock Text="ICSharp.AvalonEdit"
+                       Margin="25,139,0,0" />
+        </Grid>
     </Border>
 </Window>

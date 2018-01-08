@@ -9,6 +9,7 @@
         Topmost="{Binding OnTop}"
         ShowInTaskbar="False"
         xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
         mc:Ignorable="d"
         WindowStyle="None"
         Title="MainWindow"
@@ -67,6 +68,8 @@
     <Window.Resources>
         <converter:StringToFontStyleConverter x:Key="fontStyle" />
         <converter:StringToTextDecorationConverter x:Key="textDeco" />
+        <converter:StringToTextDocumentConverter x:Key="StringToTextDocumentConverter" />
+        <converter:AccentToColorConverter x:Key="AccentToColorConverter" />
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -100,19 +103,18 @@
                 VerticalAlignment="Top"
                 Grid.Row="0"
                 Click="btnCopySingleLine_Click" />
-        <TextBox x:Name="tbxMultiLine"
-                 Margin="10,10,4,81"
-                 TextWrapping="WrapWithOverflow"
-                 Grid.Column="0"
-                 Grid.Row="1"
-                 AcceptsReturn="True"
-                 AcceptsTab="True"
-                 AllowDrop="True"
-                 mahapps:TextBoxHelper.ClearTextButton="True"
-                 mahapps:TextBoxHelper.SelectAllOnFocus="True"
-                 Text="{Binding MultiLine, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                 mahapps:TextBoxHelper.Watermark="Multi Line"
-                 Grid.ColumnSpan="2" />
+        <avalonedit:TextEditor x:Name="tbxMultiLine"
+                               Margin="10,10,4,81"
+                               Grid.Column="0"
+                               Grid.Row="1"
+                               AllowDrop="True"
+                               mahapps:TextBoxHelper.ClearTextButton="True"
+                               mahapps:TextBoxHelper.SelectAllOnFocus="True"
+                               mahapps:TextBoxHelper.Watermark="Multi Line"
+                               Document="{Binding MultiLine, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToTextDocumentConverter}}"
+                               LineNumbersForeground="{Binding SelectedAccent, Converter={StaticResource AccentToColorConverter}}"
+                               ShowLineNumbers="True" WordWrap="True"
+                               Grid.ColumnSpan="2" />
         <Button Margin="10,0,4,48"
                 Content="Copy"
                 Height="28"
