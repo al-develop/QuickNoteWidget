@@ -151,26 +151,16 @@
                 Grid.Row="1">
             <ListView x:Name="listBox"
                       ItemsSource="{Binding CheckItems}"
+                      FontStyle="{Binding tbxFontStyle, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource textDeco}}"
+                      Foreground="{Binding tbxForeground, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                       SelectionChanged="listBox_SelectionChanged"
                       HorizontalAlignment="Stretch"
                       VerticalAlignment="Stretch">
                 <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal" x:Name="stpCbxWrapper">
-                            <CheckBox IsChecked="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                      Content="{Binding Description}"
-                                      x:Name="cbx"
-                                      
-                                      
-                                      Foreground="{Binding Foreground, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                      BorderBrush="{Binding BorderBrush, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                      />
-                            <TextBlock Text="{Binding Description}"
-                                       TextDecorations="{Binding tbxTextDecorations, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource fontStyle}}"
-                                       FontStyle="{Binding tbxFontStyle, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource textDeco}}"
-                                       Foreground="{Binding tbxForeground, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                       x:Name="tbxContent" />
-                        </StackPanel>
+                    <DataTemplate DataType="{x:Type local:CheckItemTemplate}">
+                        <CheckBox IsChecked="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                  Content="{Binding Description}"
+                                  x:Name="cbx" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
                 <ListView.ContextMenu>
