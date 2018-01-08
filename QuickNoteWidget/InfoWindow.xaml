@@ -10,22 +10,24 @@
         ResizeMode="NoResize"
         Title="InfoWindow"
         Height="213"
-        Width="275">
-    <Border BorderBrush="Black" BorderThickness="1">
+        Width="336">
+    <Border BorderBrush="Black"
+            BorderThickness="1">
         <Grid>
-        <Grid.Resources>
-            <Style TargetType="TextBlock">
-                <Setter Property="VerticalAlignment"
-                        Value="Top" />
-                <Setter Property="HorizontalAlignment"
-                        Value="Left" />
-            </Style>
-        </Grid.Resources>
-        <TextBlock Text="Developer Contact:"
-                   Margin="10,13,0,0" />
-            <TextBox Text="     github: al-develop"
+            <Grid.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="VerticalAlignment"
+                            Value="Top" />
+                    <Setter Property="HorizontalAlignment"
+                            Value="Left" />
+                </Style>
+            </Grid.Resources>
+            <TextBlock Text="Github:"
+                       TextDecorations="Underline"
+                       Margin="10,13,0,0" />
+            <TextBox Text="     github.com/al-develop/QuickNoteWidget"
                      IsReadOnly="True"
-                     Margin="116,10,10,0"
+                     Margin="75,10,8,0"
                      VerticalAlignment="Top">
                 <TextBox.Background>
                     <ImageBrush ImageSource="pack://application:,,,/github.png"
@@ -33,21 +35,21 @@
                                 Stretch="None" />
                 </TextBox.Background>
             </TextBox>
-        <TextBlock Text="Used Tools:"
-                   Margin="10,34,0,0" />
-        <TextBlock Text="MahApps.Metro"
-                   Margin="25,55,0,0" />
-        <TextBlock Text="Hardcodet.Wpf.TaskbarNotification"
-                   Margin="25,76,0,0" />
-        <TextBlock Text="DevExpress.Mvvm"
-                   Margin="25,97,0,0" />
-        <TextBlock Text="Icons from Icons8"
-                   Margin="25,118,0,0" />
-        <Button VerticalAlignment="Bottom"
-                Content="Close"
-                Margin="10,0,10,10"
-                x:Name="btnClose"
-                Click="btnClose_Click" />
+            <TextBlock Text="Used Tools:" TextDecorations="Underline"
+                       Margin="10,34,0,0" />
+            <TextBlock Text="MahApps.Metro"
+                       Margin="25,55,0,0" />
+            <TextBlock Text="Hardcodet.Wpf.TaskbarNotification"
+                       Margin="25,76,0,0" />
+            <TextBlock Text="DevExpress.Mvvm"
+                       Margin="25,97,0,0" />
+            <TextBlock Text="Icons from Icons8"
+                       Margin="25,118,0,0" />
+            <Button VerticalAlignment="Bottom"
+                    Content="Close"
+                    Margin="10,0,10,10"
+                    x:Name="btnClose"
+                    Click="btnClose_Click" />
             <TextBlock Text="ICSharp.AvalonEdit"
                        Margin="25,139,0,0" />
         </Grid>

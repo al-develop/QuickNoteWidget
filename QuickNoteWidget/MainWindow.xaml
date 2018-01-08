@@ -17,13 +17,13 @@
         Width="447">
     <Window.ContextMenu>
         <ContextMenu>
-            <MenuItem Header="Minimieren"
+            <MenuItem Header="Minimize"
                       Click="contextMinimize_Click" />
-            <MenuItem Header="Wiederherstellen"
+            <MenuItem Header="Restore"
                       Click="contextMaximize_Click" />
-            <MenuItem Header="Beenden"
+            <MenuItem Header="Exit"
                       Click="contextClose_Click" />
-            <MenuItem Header="Einstellungen">
+            <MenuItem Header="Settings">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="40" />
@@ -33,10 +33,10 @@
                         <ColumnDefinition Width="13*" />
                         <ColumnDefinition Width="42*" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="Thema:"
+                    <TextBlock Text="Theme:"
                                VerticalAlignment="Center"
                                Grid.Row="0" />
-                    <ComboBox mahapps:TextBoxHelper.Watermark="Thema"
+                    <ComboBox mahapps:TextBoxHelper.Watermark="Theme"
                               ItemsSource="{Binding Themes}"
                               SelectedItem="{Binding SelectedTheme, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                               HorizontalAlignment="Stretch"
@@ -45,10 +45,10 @@
                               Margin="5,0,5,0"
                               Grid.Column="1"
                               Grid.Row="0" />
-                    <TextBlock Text="Akzent:"
+                    <TextBlock Text="Accent:"
                                VerticalAlignment="Center"
                                Grid.Row="1" />
-                    <ComboBox mahapps:TextBoxHelper.Watermark="Thema"
+                    <ComboBox mahapps:TextBoxHelper.Watermark="Accent"
                               ItemsSource="{Binding Accents}"
                               SelectedItem="{Binding SelectedAccent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                               HorizontalAlignment="Stretch"
@@ -73,16 +73,16 @@
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200*" />
-            <ColumnDefinition Width="200*" />
+            <ColumnDefinition Width="175*" />
+            <ColumnDefinition Width="175*" />
             <ColumnDefinition Width="2" />
-            <ColumnDefinition Width="150*" />
+            <ColumnDefinition Width="200*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="61*" />
         </Grid.RowDefinitions>
-        <TextBox mahapps:TextBoxHelper.Watermark="Single Line"
+        <TextBox mahapps:TextBoxHelper.Watermark="Single line"
                  mahapps:TextBoxHelper.ClearTextButton="True"
                  mahapps:TextBoxHelper.SelectAllOnFocus="True"
                  x:Name="tbxSingleLine"
@@ -110,7 +110,7 @@
                                AllowDrop="True"
                                mahapps:TextBoxHelper.ClearTextButton="True"
                                mahapps:TextBoxHelper.SelectAllOnFocus="True"
-                               mahapps:TextBoxHelper.Watermark="Multi Line"
+                               mahapps:TextBoxHelper.Watermark="Multi line"
                                Document="{Binding MultiLine, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToTextDocumentConverter}}"
                                LineNumbersForeground="{Binding SelectedAccent, Converter={StaticResource AccentToColorConverter}}"
                                ShowLineNumbers="True" WordWrap="True"
@@ -125,7 +125,7 @@
                 Click="btnCopyMultiLine_Click"
                 Grid.ColumnSpan="2" />
         <Button Margin="10,0,10,15"
-                Content="Load File"
+                Content="Load file"
                 Height="28"
                 x:Name="btnLoadFromFile"
                 VerticalAlignment="Bottom"
@@ -133,7 +133,7 @@
                 Grid.Column="0"
                 Click="btnLoadFromFile_OnClick" />
         <Button Margin="10,0,4,15"
-                Content="Save File"
+                Content="Save file"
                 Height="28"
                 x:Name="btnSaveToFile"
                 VerticalAlignment="Bottom"
@@ -178,7 +178,7 @@
                  Text="{Binding AddEntry, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                  Grid.Row="1"
                  Grid.Column="3"
-                 mahapps:TextBoxHelper.Watermark="Add New" />
+                 mahapps:TextBoxHelper.Watermark="Add new" />
         <Button Command="{Binding AddToListCommand}"
                 IsDefault="True"
                 Grid.Row="1"
@@ -195,13 +195,13 @@
                         Grid.ColumnSpan="4">
             <tb:TaskbarIcon.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Minimieren"
+                    <MenuItem Header="Minimize"
                               Click="contextMinimize_Click" />
-                    <MenuItem Header="Wiederherstellen"
+                    <MenuItem Header="Restore"
                               Click="contextMaximize_Click" />
-                    <MenuItem Header="Beenden"
+                    <MenuItem Header="Exit"
                               Click="contextClose_Click" />
-                    <MenuItem Header="Einstellungen">
+                    <MenuItem Header="Settings">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="40" />
@@ -211,10 +211,10 @@
                                 <ColumnDefinition Width="13*" />
                                 <ColumnDefinition Width="42*" />
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="Thema:"
+                            <TextBlock Text="Theme:"
                                        VerticalAlignment="Center"
                                        Grid.Row="0" />
-                            <ComboBox mahapps:TextBoxHelper.Watermark="Thema"
+                            <ComboBox mahapps:TextBoxHelper.Watermark="Theme"
                                       ItemsSource="{Binding Themes}"
                                       SelectedItem="{Binding SelectedTheme, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                       HorizontalAlignment="Stretch"
@@ -223,10 +223,10 @@
                                       Margin="5,0,5,0"
                                       Grid.Column="1"
                                       Grid.Row="0" />
-                            <TextBlock Text="Akzent:"
+                            <TextBlock Text="Accent:"
                                        VerticalAlignment="Center"
                                        Grid.Row="1" />
-                            <ComboBox mahapps:TextBoxHelper.Watermark="Akzent"
+                            <ComboBox mahapps:TextBoxHelper.Watermark="Accent"
                                       ItemsSource="{Binding Accents}"
                                       SelectedItem="{Binding SelectedAccent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                       HorizontalAlignment="Stretch"
