@@ -9,7 +9,7 @@
         Topmost="True"
         ResizeMode="NoResize"
         Title="InfoWindow"
-        Height="213"
+        Height="226.334"
         Width="336">
     <Border BorderBrush="Black"
             BorderThickness="1">
@@ -52,6 +52,8 @@
                     Click="btnClose_Click" />
             <TextBlock Text="ICSharp.AvalonEdit"
                        Margin="25,139,0,0" />
+            <TextBlock Text="Microsoft.WindowsAPICCodePack"
+                       Margin="25,160,0,0" />
         </Grid>
     </Border>
 </Window>
