@@ -16,7 +16,16 @@ namespace QuickNoteWidget
         private string _singleLine;
         private string _multiLine;
         private string _addEntry;
+        private string _multiLineTextForegroundColor;
 
+        public string MultiLineTextForegroundColor
+        {
+            get { return _multiLineTextForegroundColor; }
+            set
+            {
+                SetProperty(ref _multiLineTextForegroundColor, value, () => MultiLineTextForegroundColor);
+            }
+        }
         public string AddEntry
         {
             get { return _addEntry; }
@@ -101,6 +110,12 @@ namespace QuickNoteWidget
             {
                 SetProperty(ref _selectedTheme, value, () => SelectedTheme);
                 ThemeChanger.ChangeTheme(this.SelectedAccent, this.SelectedTheme);
+
+                if (SelectedTheme.Name.ToLower() == "baseLight")
+                    MultiLineTextForegroundColor = "black";
+                else
+                    MultiLineTextForegroundColor = "white";
+
             }
         }
         public ObservableCollection<Accent> Accents

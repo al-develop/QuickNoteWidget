@@ -113,6 +113,7 @@
                                mahapps:TextBoxHelper.Watermark="Multi line"
                                Document="{Binding MultiLine, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToTextDocumentConverter}}"
                                LineNumbersForeground="{Binding SelectedAccent, Converter={StaticResource AccentToColorConverter}}"
+                               Foreground="{Binding MultiLineTextForegroundColor, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                ShowLineNumbers="True" WordWrap="True"
                                Grid.ColumnSpan="2" />
         <Button Margin="10,0,4,48"
