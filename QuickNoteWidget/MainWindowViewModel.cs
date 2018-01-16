@@ -110,14 +110,18 @@ namespace QuickNoteWidget
             {
                 SetProperty(ref _selectedTheme, value, () => SelectedTheme);
                 ThemeChanger.ChangeTheme(this.SelectedAccent, this.SelectedTheme);
-
-                if (SelectedTheme.Name.ToLower() == "baseLight")
-                    MultiLineTextForegroundColor = "black";
-                else
-                    MultiLineTextForegroundColor = "white";
-
+                ThemeSelectionChanged();
             }
         }
+
+        private void ThemeSelectionChanged()
+        {
+            if (SelectedTheme.Name.ToLower() == "baselight")
+                MultiLineTextForegroundColor = "black";
+            else
+                MultiLineTextForegroundColor = "white";
+        }
+
         public ObservableCollection<Accent> Accents
         {
             get { return _accents; }
