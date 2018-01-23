@@ -89,12 +89,12 @@ namespace QuickNoteWidget
                 {
                     string filePath = dialog.FileName;
                     string textContent = System.IO.File.ReadAllText(filePath);
-                    if (!string.IsNullOrEmpty(tbxMultiLine.Text))
+                    if (!String.IsNullOrEmpty(tbxMultiLine.Text))
                     {
                         MessageBoxResult keepContent = System.Windows.MessageBox.Show("Override existing content?",
-                            "Content is not empty",
-                            MessageBoxButton.YesNoCancel,
-                            MessageBoxImage.Question);
+                                                                                      "Content is not empty",
+                                                                                      MessageBoxButton.YesNoCancel,
+                                                                                      MessageBoxImage.Question);
 
                         switch (keepContent)
                         {
@@ -109,6 +109,10 @@ namespace QuickNoteWidget
                             default:
                                 return;
                         }
+                    }
+                    else
+                    {
+                        tbxMultiLine.Text = textContent;
                     }
                 }
             }
