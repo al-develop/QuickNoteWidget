@@ -14,7 +14,7 @@
         WindowStyle="None"
         Title="MainWindow"
         Height="349"
-        Width="447">
+        Width="551.437">
     <Window.ContextMenu>
         <ContextMenu>
             <MenuItem Header="Minimize"
@@ -104,7 +104,7 @@
                 Grid.Row="0"
                 Click="btnCopySingleLine_Click" />
         <avalonedit:TextEditor x:Name="tbxMultiLine"
-                               Margin="10,10,4,81"
+                               Margin="10,10,4,82"
                                Grid.Column="0"
                                Grid.Row="1"
                                AllowDrop="True"
@@ -117,31 +117,46 @@
                                ShowLineNumbers="True"
                                WordWrap="True"
                                Grid.ColumnSpan="2" />
-        <Button Margin="10,0,4,48"
-                Content="Copy"
-                Height="28"
-                x:Name="btnCopyMultiLine"
-                VerticalAlignment="Bottom"
-                Grid.Row="1"
-                Grid.Column="0"
-                Click="btnCopyMultiLine_Click"
-                Grid.ColumnSpan="2" />
-        <Button Margin="10,0,10,15"
-                Content="Load file"
-                Height="28"
-                x:Name="btnLoadFromFile"
-                VerticalAlignment="Bottom"
-                Grid.Row="1"
-                Grid.Column="0"
-                Click="btnLoadFromFile_OnClick" />
-        <Button Margin="10,0,4,15"
-                Content="Save file"
-                Height="28"
-                x:Name="btnSaveToFile"
-                VerticalAlignment="Bottom"
-                Grid.Row="1"
-                Grid.Column="1"
-                Click="btnSaveToFile_Click" />
+        <Grid Grid.ColumnSpan="2"
+              Grid.Column="0"
+              Margin="10,0,4,15"
+              Grid.Row="1"
+              Height="62"
+              VerticalAlignment="Bottom">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="125*" />
+                    <ColumnDefinition Width="127*" />
+                </Grid.ColumnDefinitions>
+                <Button Margin="0,0,18,33"
+                        Content="Clear"
+                        Height="28"
+                        x:Name="btnClearMultiLine"
+                        VerticalAlignment="Bottom" Click="btnClearMultiLine_Click"
+                        Grid.Column="0" 
+                        />
+                <Button Margin="14,0,0,33"
+                        Content="Copy"
+                        Height="28"
+                        x:Name="btnCopyMultiLine"
+                        VerticalAlignment="Bottom"
+                        Grid.Column="1"
+                        Click="btnCopyMultiLine_Click" />
+                <Button Margin="0,0,18.392,0"
+                        Content="Load file"
+                        Height="28"
+                        x:Name="btnLoadFromFile"
+                        VerticalAlignment="Bottom"
+                        Grid.Column="0"
+                        Click="btnLoadFromFile_OnClick" />
+                <Button Margin="13.608,0,0,0"
+                        Content="Save file"
+                        Height="28"
+                        x:Name="btnSaveToFile"
+                        VerticalAlignment="Bottom"
+                        Click="btnSaveToFile_Click"
+                        Grid.Column="1" />
+            </Grid>
+
         <GridSplitter Grid.Column="2"
                       VerticalAlignment="Stretch"
                       HorizontalAlignment="Stretch"

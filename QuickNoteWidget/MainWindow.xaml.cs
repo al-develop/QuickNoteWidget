@@ -129,5 +129,10 @@ namespace QuickNoteWidget
             _mainWindowViewModel.stpCbxWrapper_MouseDown();
 
         }
+
+        private void btnClearMultiLine_Click(object sender, RoutedEventArgs e)
+        {
+            this.tbxMultiLine.Text = "";
+        }
     }
 }
