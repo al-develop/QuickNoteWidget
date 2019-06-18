@@ -2,15 +2,19 @@
 A Windows Desktop Widget, build with WPF. It's basically a little notepad, where you can store Texts for later use (Like a memo). 
 You can store single line notes, mulit line notes (which you can also save to and load from a text file) and create lists.
 
-![preview](https://github.com/al-develop/QuickNoteWidget/blob/master/quicknotewidget.png)
+![preview](https://github.com/al-develop/QuickNoteWidget/blob/master/QuickNote%201.png)
 
 # How do I control that thing??
-The whole controlling of the UI goes over context menus, there's no border for a widget.
-For replacing the window, simply click somewhere on the application and drag it around.
+The whole controlling of the UI goes over context menus, the border is only used as a drag area
+
+![preview](https://github.com/al-develop/QuickNoteWidget/blob/master/QuickNote%202.png)
+
+![preview](https://github.com/al-develop/QuickNoteWidget/blob/master/QuickNote%203.png)
+
 
 # What is a Widget?
 In my definition, a widget is a small tool which helps by handling small tasks. It's a full fledget dektop application, but compared
-to 'big' players (like Word) it's just a tiny pilot fish - small but useful.
+to 'big' players (like MS Word) it's just a tiny pilot fish - small but useful.
 Windows introduced "gadgets" in Windows Vista, which were very useful. Widgets can be compared to those gadgets, since they both have the same goal "to be small and leightweight, but useful".
 
 # For Developers - what is the structure of the source Code?
