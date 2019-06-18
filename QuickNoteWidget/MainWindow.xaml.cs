@@ -134,5 +134,22 @@ namespace QuickNoteWidget
         {
             this.tbxMultiLine.Text = "";
         }
+
+        private void contextAdd_Click(object sender, RoutedEventArgs e)
+        {
+            string clipboard = Clipboard.GetText();
+            this.tbxMultiLine.Text = clipboard;
+        }
+
+        private void contextCopy_Click(object sender, RoutedEventArgs e)
+        {
+            if (String.IsNullOrEmpty(this.tbxMultiLine.Text))
+                return;
+
+            if (String.IsNullOrEmpty(this.tbxMultiLine.SelectedText))
+                Clipboard.SetText(this.tbxMultiLine.Text);
+            else
+                Clipboard.SetText(this.tbxMultiLine.SelectedText);
+        }
     }
 }
