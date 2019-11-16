@@ -4,25 +4,22 @@ You can store single line notes, mulit line notes (which you can also save to an
 
 ![preview](https://github.com/al-develop/QuickNoteWidget/blob/master/QuickNote%201.png)
 
-# How do I control that thing??
-The whole controlling of the UI goes over context menus, the border is only used as a drag area
+# How to use
+The whole controlling of the UI goes over context menus. 
+You can drag around the Window on the gray border.
+Use ctrl + mouse wheel to zoom in and out of the Text area
 
 ![preview](https://github.com/al-develop/QuickNoteWidget/blob/master/QuickNote%202.png)
 
 ![preview](https://github.com/al-develop/QuickNoteWidget/blob/master/QuickNote%203.png)
 
 
-# What is a Widget?
-In my definition, a widget is a small tool which helps by handling small tasks. It's a full fledget dektop application, but compared
-to 'big' players (like MS Word) it's just a tiny pilot fish - small but useful.
-Windows introduced "gadgets" in Windows Vista, which were very useful. Widgets can be compared to those gadgets, since they both have the same goal "to be small and leightweight, but useful".
-
-# For Developers - what is the structure of the source Code?
-I used WPF with MVVM for that. The MVVM Library in use is DevExpress.Mvvm (available in NuGet)
-For UI Theming I used MahApps.Metro (also available through NuGet)
-The multi line editor used to be a "normal" WPF TextBox, with mahapps.metro enchantments. I replaced it with a ICSharpCode.AvalonEdit TextEdit. This was necessary, for showing line numbers and to have the possibility to click on a line number and select the whole line (like it's common in other text editors, like notepad++ or KDE kate as well as any possible IDE)
-As you can see, the WindowStyle is set to "None". To handle all the controlling (like closing, minimizing etc), I used context menu (right click menu). 
+# For Contributors - what is the structure of the source Code?
+I used WPF with MVVM. The MVVM Library in use is DevExpress.Mvvm (available in NuGet)
+The Metro Design of the Context Menus comes from MahApps.Metro (also available through NuGet)
+The Text Editor is from ICSharpCode.AvalonEdit (NuGet as well). By using AvalonEdit, we have build in options for LineNumbers and general "improvements".
+The WindowStyle is set to "None". To handle all the controlling (like closing, minimizing etc), I used the context menu (right click menu). 
 There's also a TryIcon, which supports the same context menu commands as the Main UI.
-For moving the window around, I overrid the "OnMouseDrag" event. By clicking anywhere outside of a control, the widget can be moved around the desktop.
+For moving the window around, I made the border a little bit wider with a light gray background. This is the Area which a user can click on, to drag the window around.
 If you plan to extend the context menu, notice that you got to extend the MainWindow context menu AND the TrayIcon context menu.
-Although this is a MVVM architecture, I have some code behind for UI spcific stuff.
+Although this is a MVVM architecture, I have some code behind for UI specific stuff.
