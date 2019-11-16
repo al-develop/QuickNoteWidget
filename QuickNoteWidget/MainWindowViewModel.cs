@@ -12,10 +12,7 @@ namespace QuickNoteWidget
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        private ObservableCollection<CheckItemTemplate> _checkItems;
-        private string _singleLine;
         private string _multiLine;
-        private string _addEntry;
         private string _multiLineTextForegroundColor;
 
         public string MultiLineTextForegroundColor
@@ -26,25 +23,10 @@ namespace QuickNoteWidget
                 SetProperty(ref _multiLineTextForegroundColor, value, () => MultiLineTextForegroundColor);
             }
         }
-        public string AddEntry
-        {
-            get { return _addEntry; }
-            set { SetProperty(ref _addEntry, value, () => AddEntry); }
-        }
         public string MultiLine
         {
             get { return _multiLine; }
             set { SetProperty(ref _multiLine, value, () => MultiLine); }
-        }
-        public string SingleLine
-        {
-            get { return _singleLine; }
-            set { SetProperty(ref _singleLine, value, () => SingleLine); }
-        }
-        public ObservableCollection<CheckItemTemplate> CheckItems
-        {
-            get { return _checkItems; }
-            set { SetProperty(ref _checkItems, value, () => CheckItems); }
         }
 
         public MainWindowViewModel()
@@ -52,21 +34,14 @@ namespace QuickNoteWidget
             LoadSettings();
             LoadAvailableThemes();
             Init();
-
         }
 
         private void Init()
         {
-            AddToListCommand = new DelegateCommand(AddToList);
-            ClearCheckListCommand = new DelegateCommand(ClearCheckList);
             ClearMultiLineCommand = new DelegateCommand(ClearMultiLine);
 
-            SingleLine = "";
             MultiLine = "";
-            AddEntry = "";
-            CheckItems = new ObservableCollection<CheckItemTemplate>();
             OnTop = Settings.OnTop;
-
         }
 
         private void ClearMultiLine()
@@ -74,23 +49,6 @@ namespace QuickNoteWidget
             this.MultiLine = "";
         }
 
-        private void ClearCheckList()
-        {
-            this.CheckItems.Clear();
-        }
-
-        private void AddToList()
-        {
-            CheckItemTemplate newEntry = new CheckItemTemplate();
-            newEntry.IsChecked = false;
-            newEntry.Description = AddEntry;
-            CheckItems.Add(newEntry);
-
-            this.AddEntry = null;
-        }
-
-        public ICommand AddToListCommand { get; set; }
-        public ICommand ClearCheckListCommand { get; set; }
         public ICommand ClearMultiLineCommand { get; set; }
 
         #region Settings
@@ -168,8 +126,7 @@ namespace QuickNoteWidget
         }
 
         #endregion Settings
-
-
+        
         private bool _isChecked;
         private string _borderBrush;
         private string _foreground;

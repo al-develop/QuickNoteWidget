@@ -39,6 +39,23 @@ namespace QuickNoteWidget
             WindowState = WindowState.Minimized;
         }
 
+        private void contextAdd_Click(object sender, RoutedEventArgs e)
+        {
+            string clipboard = Clipboard.GetText();
+            this.tbxMultiLine.Text += clipboard;
+        }
+
+        private void contextCopy_Click(object sender, RoutedEventArgs e)
+        {
+            if (String.IsNullOrEmpty(this.tbxMultiLine.Text))
+                return;
+
+            if (String.IsNullOrEmpty(this.tbxMultiLine.SelectedText))
+                Clipboard.SetText(this.tbxMultiLine.Text);
+            else
+                Clipboard.SetText(this.tbxMultiLine.SelectedText);
+        }
+        
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
             base.OnMouseLeftButtonDown(e);
@@ -51,105 +68,49 @@ namespace QuickNoteWidget
             _mainWindowViewModel.SaveSettings();
         }
 
-        private void btnCopyMultiLine_Click(object sender, RoutedEventArgs e)
-        {
-            Clipboard.SetDataObject(tbxMultiLine.Text, true);
-        }
-
-        private void btnCopySingleLine_Click(object sender, RoutedEventArgs e)
-        {
-            Clipboard.SetDataObject(tbxSingleLine.Text, true);
-        }
-
-        private void btnSaveToFile_Click(object sender, RoutedEventArgs e)
-        {
-            using (var dialog = new CommonOpenFileDialog())
-            {
-                dialog.IsFolderPicker = true;
-                dialog.Multiselect = false;
-                if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
-                {
-                    string selection = dialog.FileNames.FirstOrDefault();
-
-                    using (var file = new System.IO.StreamWriter($"{selection}\\QuickNoteWidget_{DateTime.Now.ToShortDateString()}.txt", true))
-                    {
-                        file.WriteLine(tbxMultiLine.Text);
-                    }
-                }
-            }
-        }
-
-        private void btnLoadFromFile_OnClick(object sender, RoutedEventArgs e)
-        {
-            using (var dialog = new CommonOpenFileDialog())
-            {
-                dialog.Multiselect = false;
-                dialog.Filters.Add(new CommonFileDialogFilter("Text Files", "*.txt"));
-                if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
-                {
-                    string filePath = dialog.FileName;
-                    string textContent = System.IO.File.ReadAllText(filePath);
-                    if (!String.IsNullOrEmpty(tbxMultiLine.Text))
-                    {
-                        MessageBoxResult keepContent = System.Windows.MessageBox.Show("Override existing content?",
-                                                                                      "Content is not empty",
-                                                                                      MessageBoxButton.YesNoCancel,
-                                                                                      MessageBoxImage.Question);
-
-                        switch (keepContent)
-                        {
-                            case MessageBoxResult.Yes:
-                                tbxMultiLine.Text = textContent;
-                                break;
-
-                            case MessageBoxResult.No:
-                                tbxMultiLine.Text += textContent;
-                                break;
-
-                            default:
-                                return;
-                        }
-                    }
-                    else
-                    {
-                        tbxMultiLine.Text = textContent;
-                    }
-                }
-            }
-        }
-
         private void Info_Click(object sender, RoutedEventArgs e)
         {
             var info = new InfoWindow();
             info.Show();
         }
 
-        private void listBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-            _mainWindowViewModel.stpCbxWrapper_MouseDown();
 
+        // React to ctrl + mouse wheel
+        private void tbxMultiLine_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            bool ctrl = Keyboard.Modifiers == ModifierKeys.Control;
+            if (ctrl)
+            {
+                this.UpdateFontSize(e.Delta > 0);
+                e.Handled = true;
+            }
         }
 
-        private void btnClearMultiLine_Click(object sender, RoutedEventArgs e)
-        {
-            this.tbxMultiLine.Text = "";
-        }
+        // max and min font size values
+        private const double FONT_MAX_SIZE = 60d;
+        private const double FONT_MIN_SIZE = 5d;
 
-        private void contextAdd_Click(object sender, RoutedEventArgs e)
-        {
-            string clipboard = Clipboard.GetText();
-            this.tbxMultiLine.Text = clipboard;
-        }
 
-        private void contextCopy_Click(object sender, RoutedEventArgs e)
+        private void UpdateFontSize(bool increase)
         {
-            if (String.IsNullOrEmpty(this.tbxMultiLine.Text))
-                return;
+            double currentSize = tbxMultiLine.FontSize;
 
-            if (String.IsNullOrEmpty(this.tbxMultiLine.SelectedText))
-                Clipboard.SetText(this.tbxMultiLine.Text);
+            if (increase)
+            {
+                if (currentSize < FONT_MAX_SIZE)
+                {
+                    double newSize = Math.Min(FONT_MAX_SIZE, currentSize + 1);
+                    tbxMultiLine.FontSize = newSize;
+                }
+            }
             else
-                Clipboard.SetText(this.tbxMultiLine.SelectedText);
+            {
+                if (currentSize > FONT_MIN_SIZE)
+                {
+                    double newSize = Math.Max(FONT_MIN_SIZE, currentSize - 1);
+                    tbxMultiLine.FontSize = newSize;
+                }
+            }
         }
     }
 }

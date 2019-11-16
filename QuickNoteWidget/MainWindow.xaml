@@ -17,9 +17,9 @@
         Width="551.437">
     <Window.ContextMenu>
         <ContextMenu>
-            <MenuItem Header="Add" 
+            <MenuItem Header="Paste (Ctrl + V)" 
                       Click="contextAdd_Click" />
-            <MenuItem Header="Copy" 
+            <MenuItem Header="Copy (Ctrl + C)" 
                       Click="contextCopy_Click" />
             <Separator />
             <MenuItem Header="Minimize"
@@ -78,140 +78,17 @@
         <converter:AccentToColorConverter x:Key="AccentToColorConverter" />
     </Window.Resources>
     <Grid Background="WhiteSmoke">
-        <Grid.ColumnDefinitions>
-            <!--<ColumnDefinition Width="175*" />-->
-            <!--<ColumnDefinition Width="175*" />-->
-            <!--<ColumnDefinition Width="2" />-->
-            <!--<ColumnDefinition Width="200*" />-->
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <!--<RowDefinition Height="50" />-->
-            <!--<RowDefinition Height="61*" />-->
-        </Grid.RowDefinitions>
-        <TextBox mahapps:TextBoxHelper.Watermark="Single line"
-                 mahapps:TextBoxHelper.ClearTextButton="True"
-                 mahapps:TextBoxHelper.SelectAllOnFocus="True"
-                 x:Name="tbxSingleLine"
-                 AllowDrop="True"
-                 Text="{Binding SingleLine, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                 Grid.ColumnSpan="4"
-                 Grid.Row="0"
-                 Margin="10,10,57,0"
-                 Height="28" Visibility="Collapsed"
-                 VerticalAlignment="Top" />
-        <Button Margin="0,10,10,0"
-                Content="Copy"
-                Grid.Column="3" Visibility="Collapsed"
-                x:Name="btnCopySingleLine"
-                HorizontalAlignment="Right"
-                Width="42"
-                Height="28"
-                VerticalAlignment="Top"
-                Grid.Row="0"
-                Click="btnCopySingleLine_Click" />
         <avalonedit:TextEditor x:Name="tbxMultiLine"
                                Margin="10"
-                               Grid.Column="0"
-                               Grid.Row="1"
                                AllowDrop="True"
                                mahapps:TextBoxHelper.ClearTextButton="True"
                                mahapps:TextBoxHelper.SelectAllOnFocus="True"
-                               mahapps:TextBoxHelper.Watermark="Multi line"
                                Document="{Binding MultiLine, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToTextDocumentConverter}}"
                                LineNumbersForeground="{Binding SelectedAccent, Converter={StaticResource AccentToColorConverter}}"
                                Foreground="{Binding MultiLineTextForegroundColor, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                ShowLineNumbers="True"
                                WordWrap="True"
-                               Grid.ColumnSpan="2" />
-        <Grid Grid.ColumnSpan="2"
-              Grid.Column="0" Visibility="Collapsed"
-              Margin="10,0,4,15"
-              Grid.Row="1"
-              Height="62"
-              VerticalAlignment="Bottom">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="125*" />
-                    <ColumnDefinition Width="127*" />
-                </Grid.ColumnDefinitions>
-                <Button Margin="0,0,18,33"
-                        Content="Clear"
-                        Height="28"
-                        x:Name="btnClearMultiLine"
-                        VerticalAlignment="Bottom" Click="btnClearMultiLine_Click"
-                        Grid.Column="0" 
-                        />
-                <Button Margin="14,0,0,33"
-                        Content="Copy"
-                        Height="28"
-                        x:Name="btnCopyMultiLine"
-                        VerticalAlignment="Bottom"
-                        Grid.Column="1"
-                        Click="btnCopyMultiLine_Click" />
-                <Button Margin="0,0,18.392,0"
-                        Content="Load file"
-                        Height="28"
-                        x:Name="btnLoadFromFile"
-                        VerticalAlignment="Bottom"
-                        Grid.Column="0"
-                        Click="btnLoadFromFile_OnClick" />
-                <Button Margin="13.608,0,0,0"
-                        Content="Save file"
-                        Height="28"
-                        x:Name="btnSaveToFile"
-                        VerticalAlignment="Bottom"
-                        Click="btnSaveToFile_Click"
-                        Grid.Column="1" />
-            </Grid>
-
-        <!--<GridSplitter Grid.Column="2"
-                      VerticalAlignment="Stretch"
-                      HorizontalAlignment="Stretch"
-                      Grid.Row="1" />
-        <Border Margin="10,10,10,48"
-                BorderThickness="1"
-                BorderBrush="{Binding SelectedAccent}"
-                Grid.Column="3"
-                Grid.Row="1">
-            <ListView x:Name="listBox"
-                      ItemsSource="{Binding CheckItems}"
-                      FontStyle="{Binding tbxFontStyle, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource textDeco}}"
-                      Foreground="{Binding tbxForeground, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                      SelectionChanged="listBox_SelectionChanged"
-                      HorizontalAlignment="Stretch"
-                      VerticalAlignment="Stretch">
-                <ListView.ItemTemplate>
-                    <DataTemplate DataType="{x:Type local:CheckItemTemplate}">
-                        <CheckBox IsChecked="{Binding IsChecked, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                  Content="{Binding Description}"
-                                  x:Name="cbx" />
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-                <ListView.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Clear"
-                                  Command="{Binding ClearCheckListCommand}" />
-                    </ContextMenu>
-                </ListView.ContextMenu>
-            </ListView>
-        </Border>
-        <TextBox Margin="13,0,57,15"
-                 mahapps:TextBoxHelper.ClearTextButton="True"
-                 Height="28"
-                 VerticalAlignment="Bottom"
-                 Text="{Binding AddEntry, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                 Grid.Row="1"
-                 Grid.Column="3"
-                 mahapps:TextBoxHelper.Watermark="Add new" />
-        <Button Command="{Binding AddToListCommand}"
-                IsDefault="True"
-                Grid.Row="1"
-                Grid.Column="3"
-                Content="Add"
-                Margin="0,0,10,15"
-                Height="28"
-                VerticalAlignment="Bottom"
-                HorizontalAlignment="Right"
-                Width="42" />-->
+                               PreviewMouseWheel="tbxMultiLine_PreviewMouseWheel" />
         <tb:TaskbarIcon IconSource=".\Clipboard.ico"
                         x:Name="TaskbarIcon"
                         Grid.RowSpan="2"
