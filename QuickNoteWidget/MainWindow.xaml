@@ -14,7 +14,7 @@
         WindowStyle="None"
         Title="MainWindow"
         Height="349"
-        Width="551.437">
+        Width="551">
     <Window.ContextMenu>
         <ContextMenu>
             <MenuItem Header="Paste (Ctrl + V)" 

@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using Microsoft.WindowsAPICodePack.Dialogs;
 using Application = System.Windows.Application;
 using Clipboard = System.Windows.Clipboard;
-using DataFormats = System.Windows.DataFormats;
 
 
 namespace QuickNoteWidget
@@ -21,6 +18,7 @@ namespace QuickNoteWidget
         {
             InitializeComponent();
             DataContext = _mainWindowViewModel = new MainWindowViewModel();
+            tbxMultiLine.Focus();
         }
 
 
