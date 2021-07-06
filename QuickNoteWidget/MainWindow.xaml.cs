@@ -54,6 +54,14 @@ namespace QuickNoteWidget
                 Clipboard.SetText(this.tbxMultiLine.SelectedText);
         }
         
+        private void contextSelect_Click(object sender, RoutedEventArgs e)
+        {
+            if (String.IsNullOrEmpty(this.tbxMultiLine.Text))
+                return;
+
+            this.tbxMultiLine.SelectAll();
+        }
+
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
             base.OnMouseLeftButtonDown(e);
@@ -109,6 +117,17 @@ namespace QuickNoteWidget
                     tbxMultiLine.FontSize = newSize;
                 }
             }
+        }
+
+
+        /// <summary>
+        /// The "Document" Property of the Avalon TextEdit does not notify back to the VM
+        /// Therefore, it's necessary to catch the Textchanged event in order to update the WordCount
+        /// </summary>
+        private void TbxMultiLine_TextChanged(object sender, EventArgs e)
+        {
+            if(_mainWindowViewModel != null)
+                this._mainWindowViewModel.WordCount = this.tbxMultiLine.Document.TextLength.ToString();
         }
     }
 }

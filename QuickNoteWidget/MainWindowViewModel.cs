@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
+using ControlzEx.Theming;
 using DevExpress.Mvvm;
-using MahApps.Metro;
 
 namespace QuickNoteWidget
 {
@@ -14,7 +11,13 @@ namespace QuickNoteWidget
     {
         private string _multiLine;
         private string _multiLineTextForegroundColor;
+        private string _wordCount;
 
+        public string WordCount
+        {
+            get { return _wordCount; }
+            set { SetProperty(ref _wordCount, value, () => WordCount); }
+        }
         public string MultiLineTextForegroundColor
         {
             get { return _multiLineTextForegroundColor; }
@@ -26,22 +29,24 @@ namespace QuickNoteWidget
         public string MultiLine
         {
             get { return _multiLine; }
-            set { SetProperty(ref _multiLine, value, () => MultiLine); }
+            set 
+            {
+                SetProperty(ref _multiLine, value, () => MultiLine);
+            }
         }
+
 
         public MainWindowViewModel()
         {
-            LoadSettings();
             LoadAvailableThemes();
+            LoadSettings();
             Init();
         }
 
         private void Init()
         {
             ClearMultiLineCommand = new DelegateCommand(ClearMultiLine);
-
             MultiLine = "";
-            OnTop = Settings.OnTop;
         }
 
         private void ClearMultiLine()
@@ -50,17 +55,24 @@ namespace QuickNoteWidget
         }
 
         public ICommand ClearMultiLineCommand { get; set; }
+        
 
         #region Settings
         public Settings Settings { get; set; }
 
         private bool _onTop;
-        private ObservableCollection<AppTheme> _themes;
-        private ObservableCollection<Accent> _accents;
-        private AppTheme _selectedTheme;
-        private Accent _selectedAccent;
+        private ObservableCollection<string> _themes;
+        private ObservableCollection<string> _accents;
+        private string _selectedTheme;
+        private string _selectedAccent;
+        private bool _displayDetails;
 
-        public Accent SelectedAccent
+        public bool DisplayDetails
+        {
+            get { return _displayDetails; }
+            set { SetProperty(ref _displayDetails, value, () => DisplayDetails); }
+        }
+        public string SelectedAccent
         {
             get { return _selectedAccent; }
             set
@@ -69,7 +81,7 @@ namespace QuickNoteWidget
                 ThemeChanger.ChangeTheme(this.SelectedAccent, this.SelectedTheme);
             }
         }
-        public AppTheme SelectedTheme
+        public string SelectedTheme
         {
             get { return _selectedTheme; }
             set
@@ -79,21 +91,12 @@ namespace QuickNoteWidget
                 ThemeSelectionChanged();
             }
         }
-
-        private void ThemeSelectionChanged()
-        {
-            if (SelectedTheme.Name.ToLower() == "baselight")
-                MultiLineTextForegroundColor = "black";
-            else
-                MultiLineTextForegroundColor = "white";
-        }
-
-        public ObservableCollection<Accent> Accents
+        public ObservableCollection<string> Accents
         {
             get { return _accents; }
             set { SetProperty(ref _accents, value, () => Accents); }
         }
-        public ObservableCollection<AppTheme> Themes
+        public ObservableCollection<string> Themes
         {
             get { return _themes; }
             set { SetProperty(ref _themes, value, () => Themes); }
@@ -104,25 +107,37 @@ namespace QuickNoteWidget
             set { SetProperty(ref _onTop, value, () => OnTop); }
         }
 
+
         private void LoadAvailableThemes()
         {
-            Themes = new ObservableCollection<AppTheme>(ThemeManager.AppThemes);
-            Accents = new ObservableCollection<Accent>(ThemeManager.Accents);
-            SelectedTheme = ThemeManager.GetAppTheme(this.Settings.SelectedThemeName);
-            SelectedAccent = ThemeManager.GetAccent(this.Settings.SelectedAccentName);
+            Themes = new ObservableCollection<string>() { ThemeManager.BaseColorLight, ThemeManager.BaseColorDark };
+            Accents = new ObservableCollection<string>(ThemeManager.Current.ColorSchemes);
         }
         private void LoadSettings()
         {
             this.Settings = SettingsLogic.GetSettings();
+            OnTop = Settings.OnTop;
+            DisplayDetails = Settings.DisplayDetails;
+            SelectedTheme = Themes.FirstOrDefault(f => f == this.Settings.SelectedThemeName);
+            SelectedAccent = Accents.FirstOrDefault(f => f == this.Settings.SelectedAccentName);
         }
 
 
         public void SaveSettings()
         {
-            Settings.SelectedAccentName = this.SelectedAccent.Name;
-            Settings.SelectedThemeName = this.SelectedTheme.Name;
+            Settings.SelectedAccentName = this.SelectedAccent;
+            Settings.SelectedThemeName = this.SelectedTheme;
             Settings.OnTop = this.OnTop;
+            Settings.DisplayDetails = this.DisplayDetails;
             SettingsLogic.SaveSettings(this.Settings);
+        }
+
+        private void ThemeSelectionChanged()
+        {
+            if (!String.IsNullOrEmpty(SelectedTheme))
+                MultiLineTextForegroundColor = SelectedTheme.ToLower() == "light" ? "black" : "white";
+            else
+                MultiLineTextForegroundColor = "LightGray";
         }
 
         #endregion Settings
