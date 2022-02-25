@@ -163,6 +163,7 @@ namespace QuickNoteWidget
             ShowInTaskbar = Settings.ShowInTaskbar;
             SelectedTheme = Themes.FirstOrDefault(f => f == this.Settings.SelectedThemeName);
             SelectedAccent = Accents.FirstOrDefault(f => f == this.Settings.SelectedAccentName);
+            //ThemeManager.Current.
         }
 
 
