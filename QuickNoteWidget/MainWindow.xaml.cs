@@ -76,7 +76,7 @@ namespace QuickNoteWidget
 
         private void Info_Click(object sender, RoutedEventArgs e)
         {
-            var info = new InfoWindow();
+            var info = new InfoWindow(_mainWindowViewModel.SelectedAccent ?? "Cyan");
             info.Show();
         }
 
@@ -95,7 +95,6 @@ namespace QuickNoteWidget
         // max and min font size values
         private const double FONT_MAX_SIZE = 60d;
         private const double FONT_MIN_SIZE = 5d;
-
 
         private void UpdateFontSize(bool increase)
         {
@@ -128,6 +127,18 @@ namespace QuickNoteWidget
         {
             if(_mainWindowViewModel != null)
                 this._mainWindowViewModel.WordCount = this.tbxMultiLine.Document.TextLength.ToString();
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if ((Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) && Keyboard.IsKeyDown(Key.Add))
+            {
+                UpdateFontSize(true);
+            }
+            else if ((Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) && Keyboard.IsKeyDown(Key.Subtract))
+            {
+                UpdateFontSize(false);
+            }
         }
     }
 }
