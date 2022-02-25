@@ -9,7 +9,7 @@
         Topmost="True"
         ResizeMode="NoResize"
         Title="InfoWindow"
-        Height="226.334"
+        Height="243.667"
         Width="336">
     <Border BorderBrush="Black"
             BorderThickness="1">
@@ -24,7 +24,7 @@
             </Grid.Resources>
             <TextBlock Text="Github:"
                        TextDecorations="Underline"
-                       Margin="10,13,0,0" />
+                       Margin="10,16,0,0" />
             <TextBox Text="     github.com/al-develop/QuickNoteWidget"
                      IsReadOnly="True"
                      Margin="75,10,8,0"
@@ -35,25 +35,27 @@
                                 Stretch="None" />
                 </TextBox.Background>
             </TextBox>
-            <TextBlock Text="Used Tools:" TextDecorations="Underline"
-                       Margin="10,34,0,0" />
+            <TextBlock Text="Used Tools:"
+                       TextDecorations="Underline"
+                       Margin="10,47,0,0" />
             <TextBlock Text="MahApps.Metro"
-                       Margin="25,55,0,0" />
+                       Margin="25,68,0,0" />
             <TextBlock Text="Hardcodet.Wpf.TaskbarNotification"
-                       Margin="25,76,0,0" />
+                       Margin="25,89,0,0" />
             <TextBlock Text="DevExpress.Mvvm"
-                       Margin="25,97,0,0" />
+                       Margin="25,110,0,0" />
             <TextBlock Text="Icons from Icons8"
-                       Margin="25,118,0,0" />
+                       Margin="25,131,0,0" />
             <Button VerticalAlignment="Bottom"
                     Content="Close"
+                    Style="{DynamicResource MahApps.Styles.Button.Square.Accent}"
                     Margin="10,0,10,10"
                     x:Name="btnClose"
                     Click="btnClose_Click" />
             <TextBlock Text="ICSharp.AvalonEdit"
-                       Margin="25,139,0,0" />
+                       Margin="25,152,0,0" />
             <TextBlock Text="Microsoft.WindowsAPICCodePack"
-                       Margin="25,160,0,0" />
+                       Margin="25,173,0,0" />
         </Grid>
     </Border>
 </Window>

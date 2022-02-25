@@ -4,15 +4,50 @@ using System.Linq;
 using System.Windows.Input;
 using ControlzEx.Theming;
 using DevExpress.Mvvm;
+using QuickNoteWidget.Theme;
 
 namespace QuickNoteWidget
 {
     public class MainWindowViewModel : ViewModelBase
     {
+        #region Constants
+        private const string WHITE = "#FFFFFF";
+        private const string BLACK = "#252525"; // Based on Theme colord "Dark"
+        private const string GRAY = "#3A3A3A";  // slightly lighter than BLACK
+        private const string WHITE_SMOKE = "#EAEAEA"; // slightly darker than "WhiteSmoke"
+        private const string NORMAL = "Normal";
+        private const string ITALIC = "Italic";
+        private const string STRIKETHROUGH = "Strikethrough";
+        #endregion
+
         private string _multiLine;
         private string _multiLineTextForegroundColor;
         private string _wordCount;
+        private string _dragAreaColor;
+        private string _statusBarBackground;
 
+        public string StatusBarBackground
+        {
+            get
+            {
+                return _statusBarBackground;
+            }
+            set
+            {
+                SetProperty(ref _statusBarBackground, value, () => StatusBarBackground);
+            }
+        }
+        public string DragAreaColor
+        {
+            get
+            {
+                return _dragAreaColor;
+            }
+            set
+            {
+                SetProperty(ref _dragAreaColor, value, () => DragAreaColor);
+            }
+        }
         public string WordCount
         {
             get { return _wordCount; }
@@ -29,7 +64,7 @@ namespace QuickNoteWidget
         public string MultiLine
         {
             get { return _multiLine; }
-            set 
+            set
             {
                 SetProperty(ref _multiLine, value, () => MultiLine);
             }
@@ -46,16 +81,16 @@ namespace QuickNoteWidget
         private void Init()
         {
             ClearMultiLineCommand = new DelegateCommand(ClearMultiLine);
-            MultiLine = "";
+            MultiLine = String.Empty;
         }
 
         private void ClearMultiLine()
         {
-            this.MultiLine = "";
+            this.MultiLine = String.Empty;
         }
 
         public ICommand ClearMultiLineCommand { get; set; }
-        
+
 
         #region Settings
         public Settings Settings { get; set; }
@@ -87,6 +122,8 @@ namespace QuickNoteWidget
             set
             {
                 SetProperty(ref _selectedTheme, value, () => SelectedTheme);
+                StatusBarBackground = this.SelectedTheme == ThemeManager.BaseColorLight ? WHITE : BLACK;
+                DragAreaColor = this.SelectedTheme == ThemeManager.BaseColorLight ? WHITE_SMOKE : GRAY;
                 ThemeChanger.ChangeTheme(this.SelectedAccent, this.SelectedTheme);
                 ThemeSelectionChanged();
             }
@@ -120,6 +157,7 @@ namespace QuickNoteWidget
             DisplayDetails = Settings.DisplayDetails;
             SelectedTheme = Themes.FirstOrDefault(f => f == this.Settings.SelectedThemeName);
             SelectedAccent = Accents.FirstOrDefault(f => f == this.Settings.SelectedAccentName);
+            //ThemeManager.Current.
         }
 
 
@@ -135,13 +173,13 @@ namespace QuickNoteWidget
         private void ThemeSelectionChanged()
         {
             if (!String.IsNullOrEmpty(SelectedTheme))
-                MultiLineTextForegroundColor = SelectedTheme.ToLower() == "light" ? "black" : "white";
+                MultiLineTextForegroundColor = SelectedTheme == ThemeManager.BaseColorLight ? BLACK : WHITE;
             else
-                MultiLineTextForegroundColor = "LightGray";
+                MultiLineTextForegroundColor = WHITE_SMOKE;
         }
 
         #endregion Settings
-        
+
         private bool _isChecked;
         private string _borderBrush;
         private string _foreground;
@@ -182,24 +220,26 @@ namespace QuickNoteWidget
 
         public void stpCbxWrapper_MouseDown()
         {
+#pragma warning disable CS0472 // IsChecked == true is more readable
             if (IsChecked != null && IsChecked == true)
+#pragma warning restore CS0472 // IsChecked == true is more readable
             {
                 IsChecked = false;
-                BorderBrush = "Black";
+                BorderBrush = BLACK;
 
-                tbxForeground = "Black";
-                tbxFontStyle = "Normal";
+                tbxForeground = BLACK;
+                tbxFontStyle = NORMAL;
                 tbxTextDecorations = null;
             }
             else
             {
                 IsChecked = true;
-                BorderBrush = "Gray";
-                Foreground = "Gray";
+                BorderBrush = GRAY;
+                Foreground = GRAY;
 
-                tbxForeground = "Gray";
-                tbxFontStyle = "Italic";
-                tbxTextDecorations = "Strikethrough";
+                tbxForeground = GRAY;
+                tbxFontStyle = ITALIC;
+                tbxTextDecorations = STRIKETHROUGH;
             }
         }
     }
