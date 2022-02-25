@@ -11,10 +11,18 @@
         xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
         mc:Ignorable="d"
+        KeyDown="Window_KeyDown"
         WindowStyle="None"
         Title="MainWindow"
         Height="349"
         Width="551">
+    <Window.Resources>
+        <converter:AccentToColorConverter x:Key="AccentToColorConverter" />
+        <converter:StringToFontStyleConverter x:Key="fontStyle" />
+        <converter:StringToTextDecorationConverter x:Key="textDeco" />
+        <converter:StringToTextDocumentConverter x:Key="StringToTextDocumentConverter" />
+        <converter:BoolToVisibilityCollapsedConverter x:Key="BoolToVisibilityCollapsedConverter" />
+    </Window.Resources>
     <Window.ContextMenu>
         <ContextMenu>
             <MenuItem Header="Select All (Ctrl + A)"
@@ -73,27 +81,21 @@
                       Click="Info_Click" />
         </ContextMenu>
     </Window.ContextMenu>
-    <Window.Resources>
-        <converter:StringToFontStyleConverter x:Key="fontStyle" />
-        <converter:StringToTextDecorationConverter x:Key="textDeco" />
-        <converter:StringToTextDocumentConverter x:Key="StringToTextDocumentConverter" />
-        <converter:BoolToVisibilityCollapsedConverter x:Key="BoolToVisibilityCollapsedConverter" />
-    </Window.Resources>
-    <Grid>
-        <DockPanel Background="WhiteSmoke"
-                   LastChildFill="True">
+    <Grid Background="{Binding DragAreaColor, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+        <DockPanel LastChildFill="True">
             <StatusBar Height="23"
+                       Style="{DynamicResource MahApps.Styles.StatusBar}"
                        DockPanel.Dock="Bottom"
                        Visibility="{Binding DisplayDetails, Converter={StaticResource BoolToVisibilityCollapsedConverter}}"
                        VerticalAlignment="Bottom"
                        Margin="10,0,10,10"
-                       Background="White">
+                       Background="{Binding StatusBarBackground, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">               
                 <StatusBarItem>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Word Count: "
-                                   Foreground="{Binding SelectedAccent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                   Foreground="{Binding SelectedAccent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource AccentToColorConverter}}" />
                         <TextBlock Text="{Binding WordCount, UpdateSourceTrigger=PropertyChanged}"
-                                   Foreground="{Binding SelectedAccent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                   Foreground="{Binding SelectedAccent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource AccentToColorConverter}}" />
                     </StackPanel>
                 </StatusBarItem>
             </StatusBar>
@@ -105,7 +107,7 @@
                                    mahapps:TextBoxHelper.SelectAllOnFocus="True"                                   
                                    TextChanged="TbxMultiLine_TextChanged"
                                    Document="{Binding MultiLine, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToTextDocumentConverter}}"
-                                   LineNumbersForeground="{Binding SelectedAccent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                   LineNumbersForeground="{Binding SelectedAccent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource AccentToColorConverter}}"
                                    Foreground="{Binding MultiLineTextForegroundColor, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                    ShowLineNumbers="True"
                                    WordWrap="True"

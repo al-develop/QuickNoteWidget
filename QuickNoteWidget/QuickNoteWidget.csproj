@@ -107,7 +107,8 @@
       <DependentUpon>InfoWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs" />
-    <Compile Include="ThemeChanger.cs" />
+    <Compile Include="Theme\Accent.cs" />
+    <Compile Include="Theme\ThemeChanger.cs" />
     <Page Include="InfoWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
