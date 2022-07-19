@@ -101,7 +101,13 @@ namespace QuickNoteWidget
         private string _selectedTheme;
         private string _selectedAccent;
         private bool _displayDetails;
+        private bool _showInTaskbar;
 
+        public bool ShowInTaskbar
+        {
+            get { return _showInTaskbar; }
+            set { SetProperty(ref _showInTaskbar, value, () => ShowInTaskbar); }
+        }
         public bool DisplayDetails
         {
             get { return _displayDetails; }
@@ -155,9 +161,9 @@ namespace QuickNoteWidget
             this.Settings = SettingsLogic.GetSettings();
             OnTop = Settings.OnTop;
             DisplayDetails = Settings.DisplayDetails;
+            ShowInTaskbar = Settings.ShowInTaskbar;
             SelectedTheme = Themes.FirstOrDefault(f => f == this.Settings.SelectedThemeName);
             SelectedAccent = Accents.FirstOrDefault(f => f == this.Settings.SelectedAccentName);
-            //ThemeManager.Current.
         }
 
 
@@ -167,6 +173,7 @@ namespace QuickNoteWidget
             Settings.SelectedThemeName = this.SelectedTheme;
             Settings.OnTop = this.OnTop;
             Settings.DisplayDetails = this.DisplayDetails;
+            Settings.ShowInTaskbar = this.ShowInTaskbar;
             SettingsLogic.SaveSettings(this.Settings);
         }
 
