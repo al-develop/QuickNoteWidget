@@ -10,6 +10,7 @@ namespace QuickNoteWidget
         public string SelectedAccentName { get; set; }
         public bool OnTop { get; set; }
         public bool DisplayDetails { get; set; }
+        public bool ShowInTaskbar { get; set; }
     }
 
     public static class SettingsLogic
@@ -45,7 +46,8 @@ namespace QuickNoteWidget
             SelectedAccentName = "Cyan",
             SelectedThemeName = "Light",
             OnTop = false,
-            DisplayDetails = false
+            DisplayDetails = false,
+            ShowInTaskbar = false,
         };
     }
 }
