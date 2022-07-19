@@ -7,7 +7,7 @@
         xmlns:tb="http://www.hardcodet.net/taskbar"
         xmlns:converter="clr-namespace:QuickNoteWidget.Converter"
         Topmost="{Binding OnTop}"
-        ShowInTaskbar="False"
+        ShowInTaskbar="{Binding ShowInTaskbar}"
         xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
         mc:Ignorable="d"
@@ -76,6 +76,8 @@
                           IsChecked="{Binding OnTop}" />
                 <CheckBox Content="Display Details"
                           IsChecked="{Binding DisplayDetails}" />
+                <CheckBox Content="Show in Taskbar"
+                          IsChecked="{Binding ShowInTaskbar}" />
             </MenuItem>
             <MenuItem Header="Info"
                       Click="Info_Click" />
@@ -164,6 +166,8 @@
                                   IsChecked="{Binding OnTop}" />
                         <CheckBox Content="Display Details"
                                   IsChecked="{Binding DisplayDetails}" />
+                        <CheckBox Content="Show in Taskbar"
+                                  IsChecked="{Binding ShowInTaskbar}" />
                     </MenuItem>
                     <MenuItem Header="Info"
                               Click="Info_Click" />
