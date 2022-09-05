@@ -139,7 +139,7 @@ namespace QuickNoteWidget
             if (ctrlKeyDown && addKeyDown)
                 UpdateFontSize(true);
             else if (ctrlKeyDown && subtractKeyDown)
-                UpdateFontSize(false);
+                UpdateFontSize(false);            
         }
     }
 }
