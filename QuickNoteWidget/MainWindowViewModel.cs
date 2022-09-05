@@ -70,6 +70,7 @@ namespace QuickNoteWidget
             }
         }
 
+        public ICommand ClearMultiLineCommand { get; set; }
 
         public MainWindowViewModel()
         {
@@ -81,15 +82,13 @@ namespace QuickNoteWidget
         private void Init()
         {
             ClearMultiLineCommand = new DelegateCommand(ClearMultiLine);
-            MultiLine = String.Empty;
+            ClearMultiLine();
         }
 
         private void ClearMultiLine()
         {
             this.MultiLine = String.Empty;
         }
-
-        public ICommand ClearMultiLineCommand { get; set; }
 
 
         #region Settings
