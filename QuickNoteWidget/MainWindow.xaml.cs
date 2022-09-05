@@ -48,6 +48,7 @@ namespace QuickNoteWidget
             if (String.IsNullOrEmpty(this.tbxMultiLine.Text))
                 return;
 
+
             if (String.IsNullOrEmpty(this.tbxMultiLine.SelectedText))
                 Clipboard.SetText(this.tbxMultiLine.Text);
             else
@@ -84,7 +85,7 @@ namespace QuickNoteWidget
         // React to ctrl + mouse wheel
         private void tbxMultiLine_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            bool ctrl = Keyboard.Modifiers == ModifierKeys.Control;
+            bool ctrl = (Keyboard.Modifiers == ModifierKeys.Control);
             if (ctrl)
             {
                 this.UpdateFontSize(e.Delta > 0);
@@ -131,14 +132,14 @@ namespace QuickNoteWidget
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            if ((Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) && Keyboard.IsKeyDown(Key.Add))
-            {
+            bool ctrlKeyDown = (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl));
+            bool addKeyDown = Keyboard.IsKeyDown(Key.Add);
+            bool subtractKeyDown = Keyboard.IsKeyDown(Key.Subtract);
+
+            if (ctrlKeyDown && addKeyDown)
                 UpdateFontSize(true);
-            }
-            else if ((Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) && Keyboard.IsKeyDown(Key.Subtract))
-            {
-                UpdateFontSize(false);
-            }
+            else if (ctrlKeyDown && subtractKeyDown)
+                UpdateFontSize(false);            
         }
     }
 }
