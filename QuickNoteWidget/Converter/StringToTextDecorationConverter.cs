@@ -13,17 +13,25 @@ namespace QuickNoteWidget.Converter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value != null)
-            {
-                switch (value.ToString())
-                {
-                    case "Strikethrough":
-                        return TextDecorations.Strikethrough;
-                    default:
-                        return DependencyProperty.UnsetValue;
+            if (value == null)
+                return DependencyProperty.UnsetValue;
 
-                }
-            }
+            string textDecoration = value.ToString();
+
+
+            if (textDecoration == "Strikethrough")
+                return TextDecorations.Strikethrough;
+
+            else if (textDecoration == "Underline")
+                return TextDecorations.Underline;
+
+            else if (textDecoration == "OverLine")
+                return TextDecorations.OverLine;
+
+            else if (textDecoration == "Baseline")
+                return TextDecorations.Baseline;
+
+
             return DependencyProperty.UnsetValue;
         }
 

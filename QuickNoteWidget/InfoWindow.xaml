@@ -13,7 +13,7 @@
         Width="336">
     <Border BorderBrush="Black"
             BorderThickness="1">
-        <Grid>
+        <Grid x:Name="mainGrid">
             <Grid.Resources>
                 <Style TargetType="TextBlock">
                     <Setter Property="VerticalAlignment"

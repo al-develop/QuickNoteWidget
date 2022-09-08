@@ -17,6 +17,11 @@ namespace QuickNoteWidget.Converter
             {
                 case "Italic":
                     return FontStyles.Italic;
+
+                case "Bold":
+                case "Oblique":
+                    return FontStyles.Oblique;
+
                 case "Normal":
                 default:
                     return FontStyles.Normal;
@@ -30,5 +35,3 @@ namespace QuickNoteWidget.Converter
         }
     }
 }
-
-

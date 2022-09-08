@@ -6,8 +6,6 @@
         xmlns:local="clr-namespace:QuickNoteWidget"
         xmlns:tb="http://www.hardcodet.net/taskbar"
         xmlns:converter="clr-namespace:QuickNoteWidget.Converter"
-        Topmost="{Binding OnTop}"
-        ShowInTaskbar="{Binding ShowInTaskbar}"
         xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
         mc:Ignorable="d"
@@ -15,6 +13,9 @@
         WindowStyle="None"
         Title="MainWindow"
         Height="349"
+        Topmost="{Binding Settings.OnTop}"
+        ShowInTaskbar="{Binding Settings.ShowInTaskbar}"
+        ContextMenu="{DynamicResource contextMenu}"
         Width="551">
     <Window.Resources>
         <converter:AccentToColorConverter x:Key="AccentToColorConverter" />
@@ -22,9 +23,8 @@
         <converter:StringToTextDecorationConverter x:Key="textDeco" />
         <converter:StringToTextDocumentConverter x:Key="StringToTextDocumentConverter" />
         <converter:BoolToVisibilityCollapsedConverter x:Key="BoolToVisibilityCollapsedConverter" />
-    </Window.Resources>
-    <Window.ContextMenu>
-        <ContextMenu>
+       
+        <ContextMenu x:Key="contextMenu">
             <MenuItem Header="Select All (Ctrl + A)"
                       Click="contextSelect_Click" />
             <MenuItem Header="Paste (Ctrl + V)"
@@ -73,22 +73,23 @@
                               Grid.Row="1" />
                 </Grid>
                 <CheckBox Content="On Top"
-                          IsChecked="{Binding OnTop}" />
+                          IsChecked="{Binding Settings.OnTop}" />
                 <CheckBox Content="Display Details"
-                          IsChecked="{Binding DisplayDetails}" />
+                          IsChecked="{Binding Settings.DisplayDetails}" />
                 <CheckBox Content="Show in Taskbar"
-                          IsChecked="{Binding ShowInTaskbar}" />
+                          IsChecked="{Binding Settings.ShowInTaskbar}" />
             </MenuItem>
             <MenuItem Header="Info"
                       Click="Info_Click" />
         </ContextMenu>
-    </Window.ContextMenu>
+    </Window.Resources>
+
     <Grid Background="{Binding DragAreaColor, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
         <DockPanel LastChildFill="True">
             <StatusBar Height="23"
                        Style="{DynamicResource MahApps.Styles.StatusBar}"
                        DockPanel.Dock="Bottom"
-                       Visibility="{Binding DisplayDetails, Converter={StaticResource BoolToVisibilityCollapsedConverter}}"
+                       Visibility="{Binding Settings.DisplayDetails, Converter={StaticResource BoolToVisibilityCollapsedConverter}}"
                        VerticalAlignment="Bottom"
                        Margin="10,0,10,10"
                        Background="{Binding StatusBarBackground, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">               
@@ -118,61 +119,8 @@
         <tb:TaskbarIcon IconSource=".\Clipboard.ico"
                         x:Name="TaskbarIcon"
                         Grid.RowSpan="2"
-                        Grid.ColumnSpan="4">
-            <tb:TaskbarIcon.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="Minimize"
-                              Click="contextMinimize_Click" />
-                    <MenuItem Header="Restore"
-                              Click="contextMaximize_Click" />
-                    <MenuItem Header="Exit"
-                              Click="contextClose_Click" />
-                    <MenuItem Header="Settings">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="40" />
-                                <RowDefinition Height="40" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="13*" />
-                                <ColumnDefinition Width="42*" />
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="Theme:"
-                                       VerticalAlignment="Center"
-                                       Grid.Row="0" />
-                            <ComboBox mahapps:TextBoxHelper.Watermark="Theme"
-                                      ItemsSource="{Binding Themes}"
-                                      SelectedItem="{Binding SelectedTheme, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                      HorizontalAlignment="Stretch"
-                                      DisplayMemberPath="Name"
-                                      Height="23"
-                                      Margin="5,0,5,0"
-                                      Grid.Column="1"
-                                      Grid.Row="0" />
-                            <TextBlock Text="Accent:"
-                                       VerticalAlignment="Center"
-                                       Grid.Row="1" />
-                            <ComboBox mahapps:TextBoxHelper.Watermark="Accent"
-                                      ItemsSource="{Binding Accents}"
-                                      SelectedItem="{Binding SelectedAccent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                      HorizontalAlignment="Stretch"
-                                      DisplayMemberPath="Name"
-                                      Height="23"
-                                      Margin="5,0,5,0"
-                                      Grid.Column="1"
-                                      Grid.Row="1" />
-                        </Grid>
-                        <CheckBox Content="On Top"
-                                  IsChecked="{Binding OnTop}" />
-                        <CheckBox Content="Display Details"
-                                  IsChecked="{Binding DisplayDetails}" />
-                        <CheckBox Content="Show in Taskbar"
-                                  IsChecked="{Binding ShowInTaskbar}" />
-                    </MenuItem>
-                    <MenuItem Header="Info"
-                              Click="Info_Click" />
-                </ContextMenu>
-            </tb:TaskbarIcon.ContextMenu>
+                        Grid.ColumnSpan="4"
+                        ContextMenu="{DynamicResource contextMenu}">
         </tb:TaskbarIcon>
     </Grid>
 </Window>

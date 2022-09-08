@@ -41,9 +41,7 @@ namespace QuickNoteWidget.Converter
                 case "Mauve": return "#FF76608A";
                 case "Taupe": return "#FF87794E";
                 case "Sienna": return "#FFA0522D";
-                default: return "Cyan"; // just return Cyan as the default color
-
-
+                default: return "Cyan";
             }
         }
 
@@ -75,9 +73,8 @@ namespace QuickNoteWidget.Converter
                 case "#FF76608A": return "Mauve";
                 case "#FF87794E": return "Taupe";
                 case "#FFA0522D": return "Sienna";
-                default: return accent; // just return the input
+                default: return "#FF1BA1E2";
             }
-
         }
     }
 }

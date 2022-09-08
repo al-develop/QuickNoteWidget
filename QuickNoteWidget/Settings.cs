@@ -15,13 +15,31 @@ namespace QuickNoteWidget
 
     public static class SettingsLogic
     {
+        private const string CYAN = "Cyan";
+        private const string LIGHT = "Light";
         private static readonly string SettingsPath = $"{AppDomain.CurrentDomain.BaseDirectory}settings.xml";
 
         public static void SaveSettings(Settings settings)
         {
-            if (File.Exists(SettingsPath))
+            if (DoesSettingFileExists())
                 File.Delete(SettingsPath);
 
+            SerializeToFile(settings);
+        }
+
+
+        public static Settings GetSettings()
+        {
+            if (DoesSettingFileExists() == false)
+                return SettingsLogic.GetDefaultSettings();
+
+            return DeserializeFromFile();
+        }
+
+
+
+        private static void SerializeToFile(Settings settings)
+        {
             using (FileStream stream = new FileStream(SettingsPath, FileMode.OpenOrCreate))
             {
                 var serializer = new XmlSerializer(typeof(Settings));
@@ -29,11 +47,8 @@ namespace QuickNoteWidget
             }
         }
 
-        public static Settings GetSettings()
+        private static Settings DeserializeFromFile()
         {
-            if (!File.Exists(SettingsPath))
-                return SettingsLogic.GetDefaultSettings();
-
             using (FileStream stream = new FileStream(SettingsPath, FileMode.OpenOrCreate))
             {
                 var serializer = new XmlSerializer(typeof(Settings));
@@ -41,13 +56,23 @@ namespace QuickNoteWidget
             }
         }
 
+
+
+
         private static Settings GetDefaultSettings() => new Settings()
         {
-            SelectedAccentName = "Cyan",
-            SelectedThemeName = "Light",
+            SelectedAccentName = CYAN,
+            SelectedThemeName = LIGHT,
             OnTop = false,
             DisplayDetails = false,
             ShowInTaskbar = false,
         };
+
+
+
+        private static bool DoesSettingFileExists()
+        {
+            return File.Exists(SettingsPath);
+        }
     }
 }

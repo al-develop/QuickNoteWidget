@@ -28,47 +28,30 @@ namespace QuickNoteWidget
 
         public string StatusBarBackground
         {
-            get
-            {
-                return _statusBarBackground;
-            }
-            set
-            {
-                SetProperty(ref _statusBarBackground, value, () => StatusBarBackground);
-            }
+            get => _statusBarBackground;
+            set => SetProperty(ref _statusBarBackground, value, () => StatusBarBackground);
         }
         public string DragAreaColor
         {
-            get
-            {
-                return _dragAreaColor;
-            }
-            set
-            {
-                SetProperty(ref _dragAreaColor, value, () => DragAreaColor);
-            }
+            get => _dragAreaColor;
+            set => SetProperty(ref _dragAreaColor, value, () => DragAreaColor);
         }
         public string WordCount
         {
-            get { return _wordCount; }
-            set { SetProperty(ref _wordCount, value, () => WordCount); }
+            get => _wordCount;
+            set => SetProperty(ref _wordCount, value, () => WordCount);
         }
         public string MultiLineTextForegroundColor
         {
-            get { return _multiLineTextForegroundColor; }
-            set
-            {
-                SetProperty(ref _multiLineTextForegroundColor, value, () => MultiLineTextForegroundColor);
-            }
+            get => _multiLineTextForegroundColor;
+            set => SetProperty(ref _multiLineTextForegroundColor, value, () => MultiLineTextForegroundColor);
         }
         public string MultiLine
         {
-            get { return _multiLine; }
-            set
-            {
-                SetProperty(ref _multiLine, value, () => MultiLine);
-            }
+            get => _multiLine;
+            set => SetProperty(ref _multiLine, value, () => MultiLine);
         }
+
 
         public ICommand ClearMultiLineCommand { get; set; }
 
@@ -85,36 +68,29 @@ namespace QuickNoteWidget
             ClearMultiLine();
         }
 
-        private void ClearMultiLine()
-        {
-            this.MultiLine = String.Empty;
-        }
+        private void ClearMultiLine() => this.MultiLine = String.Empty;
+
 
 
         #region Settings
-        public Settings Settings { get; set; }
+        //public Settings Settings { get; set; }
 
-        private bool _onTop;
+        private Settings _settings;
+
+        public Settings Settings
+        {
+            get { return _settings; }
+            set { SetProperty(ref _settings, value, () => Settings); }
+        }
+
+
         private ObservableCollection<string> _themes;
         private ObservableCollection<string> _accents;
         private string _selectedTheme;
         private string _selectedAccent;
-        private bool _displayDetails;
-        private bool _showInTaskbar;
-
-        public bool ShowInTaskbar
-        {
-            get { return _showInTaskbar; }
-            set { SetProperty(ref _showInTaskbar, value, () => ShowInTaskbar); }
-        }
-        public bool DisplayDetails
-        {
-            get { return _displayDetails; }
-            set { SetProperty(ref _displayDetails, value, () => DisplayDetails); }
-        }
         public string SelectedAccent
         {
-            get { return _selectedAccent; }
+            get => _selectedAccent;
             set
             {
                 SetProperty(ref _selectedAccent, value, () => SelectedAccent);
@@ -123,7 +99,7 @@ namespace QuickNoteWidget
         }
         public string SelectedTheme
         {
-            get { return _selectedTheme; }
+            get => _selectedTheme;
             set
             {
                 SetProperty(ref _selectedTheme, value, () => SelectedTheme);
@@ -135,18 +111,13 @@ namespace QuickNoteWidget
         }
         public ObservableCollection<string> Accents
         {
-            get { return _accents; }
-            set { SetProperty(ref _accents, value, () => Accents); }
+            get => _accents;
+            set => SetProperty(ref _accents, value, () => Accents);
         }
         public ObservableCollection<string> Themes
         {
-            get { return _themes; }
-            set { SetProperty(ref _themes, value, () => Themes); }
-        }
-        public bool OnTop
-        {
-            get { return _onTop; }
-            set { SetProperty(ref _onTop, value, () => OnTop); }
+            get => _themes;
+            set => SetProperty(ref _themes, value, () => Themes);
         }
 
 
@@ -155,12 +126,10 @@ namespace QuickNoteWidget
             Themes = new ObservableCollection<string>() { ThemeManager.BaseColorLight, ThemeManager.BaseColorDark };
             Accents = new ObservableCollection<string>(ThemeManager.Current.ColorSchemes);
         }
+
         private void LoadSettings()
         {
             this.Settings = SettingsLogic.GetSettings();
-            OnTop = Settings.OnTop;
-            DisplayDetails = Settings.DisplayDetails;
-            ShowInTaskbar = Settings.ShowInTaskbar;
             SelectedTheme = Themes.FirstOrDefault(f => f == this.Settings.SelectedThemeName);
             SelectedAccent = Accents.FirstOrDefault(f => f == this.Settings.SelectedAccentName);
         }
@@ -170,9 +139,6 @@ namespace QuickNoteWidget
         {
             Settings.SelectedAccentName = this.SelectedAccent;
             Settings.SelectedThemeName = this.SelectedTheme;
-            Settings.OnTop = this.OnTop;
-            Settings.DisplayDetails = this.DisplayDetails;
-            Settings.ShowInTaskbar = this.ShowInTaskbar;
             SettingsLogic.SaveSettings(this.Settings);
         }
 
@@ -185,68 +151,5 @@ namespace QuickNoteWidget
         }
 
         #endregion Settings
-
-        private bool _isChecked;
-        private string _borderBrush;
-        private string _foreground;
-        private string _tbxForeground;
-        private string _tbxFontStyle;
-        private string _tbxTextDecorations;
-
-        public string tbxTextDecorations
-        {
-            get { return _tbxTextDecorations; }
-            set { SetProperty(ref _tbxTextDecorations, value, () => tbxTextDecorations); }
-        }
-        public string tbxFontStyle
-        {
-            get { return _tbxFontStyle; }
-            set { SetProperty(ref _tbxFontStyle, value, () => tbxFontStyle); }
-        }
-        public string tbxForeground
-        {
-            get { return _tbxForeground; }
-            set { SetProperty(ref _tbxForeground, value, () => tbxForeground); }
-        }
-        public string Foreground
-        {
-            get { return _foreground; }
-            set { SetProperty(ref _foreground, value, () => Foreground); }
-        }
-        public string BorderBrush
-        {
-            get { return _borderBrush; }
-            set { SetProperty(ref _borderBrush, value, () => BorderBrush); }
-        }
-        public bool IsChecked
-        {
-            get { return _isChecked; }
-            set { SetProperty(ref _isChecked, value, () => IsChecked); }
-        }
-
-        public void stpCbxWrapper_MouseDown()
-        {
-#pragma warning disable CS0472 // IsChecked == true is more readable
-            if (IsChecked != null && IsChecked == true)
-#pragma warning restore CS0472 // IsChecked == true is more readable
-            {
-                IsChecked = false;
-                BorderBrush = BLACK;
-
-                tbxForeground = BLACK;
-                tbxFontStyle = NORMAL;
-                tbxTextDecorations = null;
-            }
-            else
-            {
-                IsChecked = true;
-                BorderBrush = GRAY;
-                Foreground = GRAY;
-
-                tbxForeground = GRAY;
-                tbxFontStyle = ITALIC;
-                tbxTextDecorations = STRIKETHROUGH;
-            }
-        }
     }
 }

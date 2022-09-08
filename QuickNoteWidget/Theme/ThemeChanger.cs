@@ -6,7 +6,7 @@ namespace QuickNoteWidget.Theme
 {
     /// <summary>
     /// To keep the MainWindowViewModel agnostic of the Window, 
-    /// this Helper class can be usd to change the theme from the ViewModel
+    /// this Helper class can be used to change the theme from the ViewModel
     /// Default Values are
     ///     Accent : Cyan | Theme : Light
     /// </summary>
@@ -14,15 +14,15 @@ namespace QuickNoteWidget.Theme
     {
         public static void ChangeTheme(string accent, string theme)
         {
-            if (string.IsNullOrEmpty(accent))
+            if (String.IsNullOrEmpty(accent))
                 accent = "Cyan";
 
 
-            if (string.IsNullOrEmpty(theme))
+            if (String.IsNullOrEmpty(theme))
                 theme = "Light";
 
 
-            string name = string.Concat(theme, ".", accent);
+            string name = String.Concat(theme, ".", accent);
             ThemeManager.Current.ChangeTheme(Application.Current, name);
         }
     }

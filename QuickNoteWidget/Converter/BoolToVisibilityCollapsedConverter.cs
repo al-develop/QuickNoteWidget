@@ -9,14 +9,9 @@ namespace QuickNoteWidget.Converter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            bool val = (bool)value;
-            switch(value)
-            {
-                case true:
-                    return Visibility.Visible;
-                default:
-                    return Visibility.Collapsed;
-            }
+            if((bool)value)
+                return Visibility.Visible;
+            return Visibility.Collapsed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -1,17 +1,23 @@
-﻿//using System.ComponentModel;
-using System.Windows;
+﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace QuickNoteWidget
 {
-    /// <summary>
-    /// Interaction logic for InfoWindow.xaml
-    /// </summary>
     public partial class InfoWindow : Window
     {
-        public InfoWindow(string colorScheme)
+        public InfoWindow(string currentAccent)
         {
             InitializeComponent();
+
+            Style textBlockForegroundStyle = new Style(typeof(TextBlock));
+            textBlockForegroundStyle.Setters.Add(new Setter()
+            {
+                Property = TextBlock.ForegroundProperty,
+                Value = currentAccent
+            });
+
+            // TODO: apply styles to all TextBox
         }
 
 
@@ -19,13 +25,12 @@ namespace QuickNoteWidget
         {
             this.Close();
         }
+
+
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
             base.OnMouseLeftButtonDown(e);
             DragMove();
         }
-
-
-
     }
 }
