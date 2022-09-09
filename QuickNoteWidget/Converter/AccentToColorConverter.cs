@@ -6,8 +6,14 @@ namespace QuickNoteWidget.Converter
 {
     public class AccentToColorConverter : IValueConverter
     {
+        public string Convert(string value)
+        {
+            return Convert(value, null, null, null).ToString();
+        }
+
+
         /// <summary>
-        /// map MahApps.ColorScheme to according Hex values
+        /// Convert MahApps.ColorScheme to according Hex values
         /// Hex values taken from MahApps Source Code
         /// https://github.com/MahApps/MahApps.Metro
         /// </summary>
@@ -16,8 +22,6 @@ namespace QuickNoteWidget.Converter
             string accent = (string)value;
             switch (accent)
             {
-
-
                 case "Red": return "#FFE51400";
                 case "Green": return "#FF60A917";
                 case "Blue": return "#FF0078D7";
@@ -44,6 +48,7 @@ namespace QuickNoteWidget.Converter
                 default: return "Cyan";
             }
         }
+        
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {

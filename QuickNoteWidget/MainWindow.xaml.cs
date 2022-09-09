@@ -77,10 +77,9 @@ namespace QuickNoteWidget
 
         private void Info_Click(object sender, RoutedEventArgs e)
         {
-            var info = new InfoWindow(_mainWindowViewModel.SelectedAccent ?? "Cyan");
-            info.Show();
+            var _infoWindow = new InfoWindow(_mainWindowViewModel.SelectedAccent ?? "Cyan");
+            _infoWindow.Show();
         }
-
 
         // React to ctrl + mouse wheel
         private void tbxMultiLine_PreviewMouseWheel(object sender, MouseWheelEventArgs e)

@@ -13,8 +13,8 @@ namespace QuickNoteWidget
         #region Constants
         private const string WHITE = "#FFFFFF";
         private const string BLACK = "#252525"; // Based on Theme colord "Dark"
-        private const string GRAY = "#3A3A3A";  // slightly lighter than BLACK
-        private const string WHITE_SMOKE = "#EAEAEA"; // slightly darker than "WhiteSmoke"
+        private const string GRAY = "#616161";  // slightly lighter than BLACK
+        private const string LIGHT_GRAY = "#EAEAEA"; // slightly darker than "WhiteSmoke"
         private const string NORMAL = "Normal";
         private const string ITALIC = "Italic";
         private const string STRIKETHROUGH = "Strikethrough";
@@ -55,6 +55,7 @@ namespace QuickNoteWidget
 
         public ICommand ClearMultiLineCommand { get; set; }
 
+
         public MainWindowViewModel()
         {
             LoadAvailableThemes();
@@ -73,7 +74,6 @@ namespace QuickNoteWidget
 
 
         #region Settings
-        //public Settings Settings { get; set; }
 
         private Settings _settings;
 
@@ -104,7 +104,7 @@ namespace QuickNoteWidget
             {
                 SetProperty(ref _selectedTheme, value, () => SelectedTheme);
                 StatusBarBackground = this.SelectedTheme == ThemeManager.BaseColorLight ? WHITE : BLACK;
-                DragAreaColor = this.SelectedTheme == ThemeManager.BaseColorLight ? WHITE_SMOKE : GRAY;
+                DragAreaColor = this.SelectedTheme == ThemeManager.BaseColorLight ? LIGHT_GRAY : GRAY;
                 ThemeChanger.ChangeTheme(this.SelectedAccent, this.SelectedTheme);
                 ThemeSelectionChanged();
             }
@@ -147,7 +147,7 @@ namespace QuickNoteWidget
             if (!String.IsNullOrEmpty(SelectedTheme))
                 MultiLineTextForegroundColor = SelectedTheme == ThemeManager.BaseColorLight ? BLACK : WHITE;
             else
-                MultiLineTextForegroundColor = WHITE_SMOKE;
+                MultiLineTextForegroundColor = LIGHT_GRAY;
         }
 
         #endregion Settings

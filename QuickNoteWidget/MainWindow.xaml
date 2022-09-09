@@ -12,11 +12,11 @@
         KeyDown="Window_KeyDown"
         WindowStyle="None"
         Title="MainWindow"
-        Height="349"
+        Height="350"
         Topmost="{Binding Settings.OnTop}"
         ShowInTaskbar="{Binding Settings.ShowInTaskbar}"
         ContextMenu="{DynamicResource contextMenu}"
-        Width="551">
+        Width="550">
     <Window.Resources>
         <converter:AccentToColorConverter x:Key="AccentToColorConverter" />
         <converter:StringToFontStyleConverter x:Key="fontStyle" />
@@ -91,7 +91,7 @@
                        DockPanel.Dock="Bottom"
                        Visibility="{Binding Settings.DisplayDetails, Converter={StaticResource BoolToVisibilityCollapsedConverter}}"
                        VerticalAlignment="Bottom"
-                       Margin="10,0,10,10"
+                       Margin="12,6,12,10"
                        Background="{Binding StatusBarBackground, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">               
                 <StatusBarItem>
                     <StackPanel Orientation="Horizontal">
@@ -104,10 +104,10 @@
             </StatusBar>
             <avalonedit:TextEditor x:Name="tbxMultiLine"
                                    DockPanel.Dock="Top"
-                                   Margin="10"
+                                   Margin="12,12,12,6"
                                    AllowDrop="True"
                                    mahapps:TextBoxHelper.ClearTextButton="True"
-                                   mahapps:TextBoxHelper.SelectAllOnFocus="True"                                   
+                                   mahapps:TextBoxHelper.SelectAllOnFocus="True"                              
                                    TextChanged="TbxMultiLine_TextChanged"
                                    Document="{Binding MultiLine, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToTextDocumentConverter}}"
                                    LineNumbersForeground="{Binding SelectedAccent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource AccentToColorConverter}}"
