@@ -25,7 +25,29 @@ namespace QuickNoteWidget
         private string _wordCount;
         private string _dragAreaColor;
         private string _statusBarBackground;
+        private double _transparencyValue;
+        private int _transparencyInPercent;
+        private Settings _settings;
 
+        public Settings Settings
+        {
+            get { return _settings; }
+            set { SetProperty(ref _settings, value, () => Settings); }
+        }
+        public int TransparencyInPercent
+        {
+            get { return _transparencyInPercent; }
+            set { SetProperty(ref _transparencyInPercent, value, () => TransparencyInPercent); }
+        }
+        public double TransparencyValue
+        {
+            get { return _transparencyValue; }
+            set 
+            { 
+                SetProperty(ref _transparencyValue, value, () => TransparencyValue);
+                TransparencyInPercent = (Int32)(TransparencyValue * 100);
+            }
+        }
         public string StatusBarBackground
         {
             get => _statusBarBackground;
@@ -54,6 +76,7 @@ namespace QuickNoteWidget
 
 
         public ICommand ClearMultiLineCommand { get; set; }
+        public ICommand ResetTransparencyCommand { get; set; }
 
 
         public MainWindowViewModel()
@@ -65,23 +88,17 @@ namespace QuickNoteWidget
 
         private void Init()
         {
+            ResetTransparencyCommand = new DelegateCommand(ResetTransparency);
             ClearMultiLineCommand = new DelegateCommand(ClearMultiLine);
             ClearMultiLine();
         }
 
         private void ClearMultiLine() => this.MultiLine = String.Empty;
-
+        private void ResetTransparency() => this.TransparencyValue = 1;
 
 
         #region Settings
 
-        private Settings _settings;
-
-        public Settings Settings
-        {
-            get { return _settings; }
-            set { SetProperty(ref _settings, value, () => Settings); }
-        }
 
 
         private ObservableCollection<string> _themes;
@@ -132,6 +149,7 @@ namespace QuickNoteWidget
             this.Settings = SettingsLogic.GetSettings();
             SelectedTheme = Themes.FirstOrDefault(f => f == this.Settings.SelectedThemeName);
             SelectedAccent = Accents.FirstOrDefault(f => f == this.Settings.SelectedAccentName);
+            TransparencyValue = Settings.TransparencyValue;
         }
 
 
@@ -139,6 +157,7 @@ namespace QuickNoteWidget
         {
             Settings.SelectedAccentName = this.SelectedAccent;
             Settings.SelectedThemeName = this.SelectedTheme;
+            Settings.TransparencyValue = this.TransparencyValue;
             SettingsLogic.SaveSettings(this.Settings);
         }
 

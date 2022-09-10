@@ -14,7 +14,8 @@
         Title="MainWindow"
         Height="350"
         Topmost="{Binding Settings.OnTop}"
-        ShowInTaskbar="{Binding Settings.ShowInTaskbar}"
+        ShowInTaskbar="{Binding Settings.ShowInTaskbar}" AllowsTransparency="True"
+        Opacity="{Binding TransparencyValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
         ContextMenu="{DynamicResource contextMenu}"
         Width="550">
     <Window.Resources>
@@ -23,7 +24,10 @@
         <converter:StringToTextDecorationConverter x:Key="textDeco" />
         <converter:StringToTextDocumentConverter x:Key="StringToTextDocumentConverter" />
         <converter:BoolToVisibilityCollapsedConverter x:Key="BoolToVisibilityCollapsedConverter" />
-       
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground"
+                    Value="{Binding SelectedAccent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource AccentToColorConverter}}" />
+        </Style>
         <ContextMenu x:Key="contextMenu">
             <MenuItem Header="Select All (Ctrl + A)"
                       Click="contextSelect_Click" />
@@ -79,11 +83,12 @@
                 <CheckBox Content="Show in Taskbar"
                           IsChecked="{Binding Settings.ShowInTaskbar}" />
             </MenuItem>
+            <MenuItem Header="Reset Transperency"
+                      Command="{Binding ResetTransparencyCommand}" />
             <MenuItem Header="Info"
                       Click="Info_Click" />
         </ContextMenu>
     </Window.Resources>
-
     <Grid Background="{Binding DragAreaColor, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
         <DockPanel LastChildFill="True">
             <StatusBar Height="23"
@@ -92,22 +97,39 @@
                        Visibility="{Binding Settings.DisplayDetails, Converter={StaticResource BoolToVisibilityCollapsedConverter}}"
                        VerticalAlignment="Bottom"
                        Margin="12,6,12,10"
-                       Background="{Binding StatusBarBackground, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">               
+                       Background="{Binding StatusBarBackground, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                 <StatusBarItem>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Word Count: "
-                                   Foreground="{Binding SelectedAccent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource AccentToColorConverter}}" />
-                        <TextBlock Text="{Binding WordCount, UpdateSourceTrigger=PropertyChanged}"
-                                   Foreground="{Binding SelectedAccent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource AccentToColorConverter}}" />
+                        <TextBlock Text="Word Count: " />
+                        <TextBlock Text="{Binding WordCount, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+                </StatusBarItem>
+                <Separator Margin="10,0,10,0"
+                           HorizontalAlignment="Left" />
+                <StatusBarItem>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Transparency"
+                                   Margin="0,0,10,0" />
+                        <Slider Width="100"
+                                Minimum="0.3"
+                                Maximum="1"
+                                Value="{Binding TransparencyValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        <TextBlock Margin="10,0,0,0">
+                            <TextBlock.Inlines>
+                                <Run Text="{Binding TransparencyInPercent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                <Run Text="%" />
+                            </TextBlock.Inlines>
+                        </TextBlock>
                     </StackPanel>
                 </StatusBarItem>
             </StatusBar>
+            
             <avalonedit:TextEditor x:Name="tbxMultiLine"
                                    DockPanel.Dock="Top"
                                    Margin="12,12,12,6"
                                    AllowDrop="True"
                                    mahapps:TextBoxHelper.ClearTextButton="True"
-                                   mahapps:TextBoxHelper.SelectAllOnFocus="True"                              
+                                   mahapps:TextBoxHelper.SelectAllOnFocus="True"
                                    TextChanged="TbxMultiLine_TextChanged"
                                    Document="{Binding MultiLine, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToTextDocumentConverter}}"
                                    LineNumbersForeground="{Binding SelectedAccent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource AccentToColorConverter}}"
@@ -116,11 +138,11 @@
                                    WordWrap="True"
                                    PreviewMouseWheel="tbxMultiLine_PreviewMouseWheel" />
         </DockPanel>
+        
         <tb:TaskbarIcon IconSource=".\Clipboard.ico"
                         x:Name="TaskbarIcon"
                         Grid.RowSpan="2"
                         Grid.ColumnSpan="4"
-                        ContextMenu="{DynamicResource contextMenu}">
-        </tb:TaskbarIcon>
+                        ContextMenu="{DynamicResource contextMenu}"></tb:TaskbarIcon>
     </Grid>
 </Window>

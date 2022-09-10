@@ -11,6 +11,7 @@ namespace QuickNoteWidget
         public bool OnTop { get; set; }
         public bool DisplayDetails { get; set; }
         public bool ShowInTaskbar { get; set; }
+        public double TransparencyValue { get; set; }
     }
 
     public static class SettingsLogic
@@ -66,6 +67,7 @@ namespace QuickNoteWidget
             OnTop = false,
             DisplayDetails = false,
             ShowInTaskbar = false,
+            TransparencyValue = 0.3,
         };
 
 
