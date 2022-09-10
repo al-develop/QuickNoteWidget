@@ -49,6 +49,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="40" />
                         <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="13*" />
@@ -76,6 +77,18 @@
                               Margin="5,0,5,0"
                               Grid.Column="1"
                               Grid.Row="1" />
+                    <TextBlock Text="Font: " 
+                               Grid.Row="2"
+                               VerticalAlignment="Center" />
+                    <ComboBox Width="140"
+                              mahapps:TextBoxHelper.Watermark="Fonts"
+                              Grid.Row="2"
+                              Grid.Column="1"
+                              VerticalAlignment="Center"
+                              Margin="5,0,5,0"
+                              Height="23"
+                              ItemsSource="{Binding Fonts, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                              SelectedItem="{Binding Settings.CurrentFont, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                 </Grid>
                 <CheckBox Content="On Top"
                           IsChecked="{Binding Settings.OnTop}" />
@@ -127,16 +140,6 @@
                 </StatusBarItem>
                 <Separator Margin="10,0,10,0"
                            HorizontalAlignment="Left" />
-                <StatusBarItem VerticalAlignment="Center">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Current Font: "
-                                   VerticalAlignment="Center"  />
-                        <ComboBox Width="140" VerticalAlignment="Center" Height="23"
-                                  ItemsSource="{Binding Fonts, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                  SelectedItem="{Binding Settings.CurrentFont, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                    </StackPanel>
-                </StatusBarItem>
-                
             </StatusBar>
             <avalonedit:TextEditor x:Name="tbxMultiLine"
                                    DockPanel.Dock="Top"
@@ -150,6 +153,7 @@
                                    Foreground="{Binding MultiLineTextForegroundColor, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                    ShowLineNumbers="True"
                                    WordWrap="True"
+                                   FontSize="15"
                                    FontFamily="{Binding Settings.CurrentFont, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                    PreviewMouseWheel="tbxMultiLine_PreviewMouseWheel" />
         </DockPanel>

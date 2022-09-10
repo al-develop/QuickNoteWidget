@@ -24,7 +24,7 @@
     </Window.Resources>
     <Border BorderBrush="Black"
             BorderThickness="1">
-        <Grid x:Name="mainGrid">            
+        <Grid x:Name="mainGrid">
             <TextBlock Text="Github:"
                        TextDecorations="Underline"
                        Margin="10,16,0,0" />
@@ -53,12 +53,13 @@
                        Margin="25,152,0,0" />
             <TextBlock Text="Microsoft.WindowsAPICCodePack"
                        Margin="25,173,0,0" />
-            <Button VerticalAlignment="Bottom"
+            <Button VerticalAlignment="Top"
                     Content="Close"
-                    Style="{DynamicResource MahApps.Styles.Button.Square.Accent}"
-                    Margin="10,0,10,10"
+                    Style="{DynamicResource MahApps.Styles.Button.MetroSquare.Accent}"
+                    Margin="10,203,0,0"
                     x:Name="btnClose"
-                    Click="btnClose_Click" />
+                    Click="btnClose_Click"
+                    Width="314" />
         </Grid>
     </Border>
 </Window>
