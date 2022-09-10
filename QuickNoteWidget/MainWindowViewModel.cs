@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
 using System.Windows.Input;
+
 using ControlzEx.Theming;
 using DevExpress.Mvvm;
 using QuickNoteWidget.Theme;
@@ -18,8 +22,11 @@ namespace QuickNoteWidget
         private const string NORMAL = "Normal";
         private const string ITALIC = "Italic";
         private const string STRIKETHROUGH = "Strikethrough";
-        #endregion
+        private const string DEFAULT_FONT = "Arial";
+        private const string CYAN = "Cyan";
+        #endregion Constants
 
+        #region MVVM Properties
         private string _multiLine;
         private string _multiLineTextForegroundColor;
         private string _wordCount;
@@ -28,7 +35,47 @@ namespace QuickNoteWidget
         private double _transparencyValue;
         private int _transparencyInPercent;
         private Settings _settings;
-
+        private ObservableCollection<string> _fonts;
+        private ObservableCollection<string> _themes;
+        private ObservableCollection<string> _accents;
+        private string _selectedTheme;
+        private string _selectedAccent;
+        public string SelectedAccent
+        {
+            get => _selectedAccent;
+            set
+            {
+                SetProperty(ref _selectedAccent, value, () => SelectedAccent);
+                ThemeChanger.ChangeTheme(this.SelectedAccent, this.SelectedTheme);
+            }
+        }
+        public string SelectedTheme
+        {
+            get => _selectedTheme;
+            set
+            {
+                SetProperty(ref _selectedTheme, value, () => SelectedTheme);
+                StatusBarBackground = this.SelectedTheme == ThemeManager.BaseColorLight ? WHITE : BLACK;
+                DragAreaColor = this.SelectedTheme == ThemeManager.BaseColorLight ? LIGHT_GRAY : GRAY;
+                ThemeChanger.ChangeTheme(this.SelectedAccent, this.SelectedTheme);
+                ThemeSelectionChanged();
+            }
+        }
+        public ObservableCollection<string> Accents
+        {
+            get => _accents;
+            set => SetProperty(ref _accents, value, () => Accents);
+        }
+        public ObservableCollection<string> Themes
+        {
+            get => _themes;
+            set => SetProperty(ref _themes, value, () => Themes);
+        }
+        public ObservableCollection<string> Fonts
+        {
+            get { return _fonts; }
+            set { SetProperty(ref _fonts, value, () => Fonts); }
+        }
         public Settings Settings
         {
             get { return _settings; }
@@ -74,9 +121,10 @@ namespace QuickNoteWidget
             set => SetProperty(ref _multiLine, value, () => MultiLine);
         }
 
+        #endregion MVVM Properties
 
         public ICommand ClearMultiLineCommand { get; set; }
-        public ICommand ResetTransparencyCommand { get; set; }
+        public ICommand ResetViewCommand { get; set; }
 
 
         public MainWindowViewModel()
@@ -88,62 +136,48 @@ namespace QuickNoteWidget
 
         private void Init()
         {
-            ResetTransparencyCommand = new DelegateCommand(ResetTransparency);
+            ResetViewCommand = new DelegateCommand(ResetView);
             ClearMultiLineCommand = new DelegateCommand(ClearMultiLine);
+
             ClearMultiLine();
+            Fonts = new ObservableCollection<string>(LoadInstalledFonts());
+        }
+
+        private IEnumerable<string> LoadInstalledFonts()
+        {
+            using (var fonts = new InstalledFontCollection())            
+                foreach (FontFamily font in fonts.Families)                
+                    yield return font.Name;            
         }
 
         private void ClearMultiLine() => this.MultiLine = String.Empty;
-        private void ResetTransparency() => this.TransparencyValue = 1;
 
-
-        #region Settings
-
-
-
-        private ObservableCollection<string> _themes;
-        private ObservableCollection<string> _accents;
-        private string _selectedTheme;
-        private string _selectedAccent;
-        public string SelectedAccent
+        private void ResetView()
         {
-            get => _selectedAccent;
-            set
-            {
-                SetProperty(ref _selectedAccent, value, () => SelectedAccent);
-                ThemeChanger.ChangeTheme(this.SelectedAccent, this.SelectedTheme);
-            }
-        }
-        public string SelectedTheme
-        {
-            get => _selectedTheme;
-            set
-            {
-                SetProperty(ref _selectedTheme, value, () => SelectedTheme);
-                StatusBarBackground = this.SelectedTheme == ThemeManager.BaseColorLight ? WHITE : BLACK;
-                DragAreaColor = this.SelectedTheme == ThemeManager.BaseColorLight ? LIGHT_GRAY : GRAY;
-                ThemeChanger.ChangeTheme(this.SelectedAccent, this.SelectedTheme);
-                ThemeSelectionChanged();
-            }
-        }
-        public ObservableCollection<string> Accents
-        {
-            get => _accents;
-            set => SetProperty(ref _accents, value, () => Accents);
-        }
-        public ObservableCollection<string> Themes
-        {
-            get => _themes;
-            set => SetProperty(ref _themes, value, () => Themes);
+            this.TransparencyValue = 1;
+            this.SelectedTheme = Themes.First();
+            this.SelectedAccent = Accents.First(f => f == CYAN);
+            this.Settings.CurrentFont = Fonts.First(f => f == DEFAULT_FONT);
         }
 
 
+        #region Themes
         private void LoadAvailableThemes()
         {
             Themes = new ObservableCollection<string>() { ThemeManager.BaseColorLight, ThemeManager.BaseColorDark };
             Accents = new ObservableCollection<string>(ThemeManager.Current.ColorSchemes);
         }
+        private void ThemeSelectionChanged()
+        {
+            if (!String.IsNullOrEmpty(SelectedTheme))
+                MultiLineTextForegroundColor = SelectedTheme == ThemeManager.BaseColorLight ? BLACK : WHITE;
+            else
+                MultiLineTextForegroundColor = LIGHT_GRAY;
+        }
+        #endregion Themes
 
+
+        #region Settings
         private void LoadSettings()
         {
             this.Settings = SettingsLogic.GetSettings();
@@ -151,22 +185,12 @@ namespace QuickNoteWidget
             SelectedAccent = Accents.FirstOrDefault(f => f == this.Settings.SelectedAccentName);
             TransparencyValue = Settings.TransparencyValue;
         }
-
-
         public void SaveSettings()
         {
             Settings.SelectedAccentName = this.SelectedAccent;
             Settings.SelectedThemeName = this.SelectedTheme;
             Settings.TransparencyValue = this.TransparencyValue;
             SettingsLogic.SaveSettings(this.Settings);
-        }
-
-        private void ThemeSelectionChanged()
-        {
-            if (!String.IsNullOrEmpty(SelectedTheme))
-                MultiLineTextForegroundColor = SelectedTheme == ThemeManager.BaseColorLight ? BLACK : WHITE;
-            else
-                MultiLineTextForegroundColor = LIGHT_GRAY;
         }
 
         #endregion Settings

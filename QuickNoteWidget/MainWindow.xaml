@@ -14,10 +14,11 @@
         Title="MainWindow"
         Height="350"
         Topmost="{Binding Settings.OnTop}"
-        ShowInTaskbar="{Binding Settings.ShowInTaskbar}" AllowsTransparency="True"
+        ShowInTaskbar="{Binding Settings.ShowInTaskbar}"
+        AllowsTransparency="True"
         Opacity="{Binding TransparencyValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
         ContextMenu="{DynamicResource contextMenu}"
-        Width="550">
+        Width="600">
     <Window.Resources>
         <converter:AccentToColorConverter x:Key="AccentToColorConverter" />
         <converter:StringToFontStyleConverter x:Key="fontStyle" />
@@ -83,22 +84,22 @@
                 <CheckBox Content="Show in Taskbar"
                           IsChecked="{Binding Settings.ShowInTaskbar}" />
             </MenuItem>
-            <MenuItem Header="Reset Transperency"
-                      Command="{Binding ResetTransparencyCommand}" />
+            <MenuItem Header="Reset Settings"
+                      Command="{Binding ResetViewCommand}" />
             <MenuItem Header="Info"
                       Click="Info_Click" />
         </ContextMenu>
     </Window.Resources>
     <Grid Background="{Binding DragAreaColor, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
         <DockPanel LastChildFill="True">
-            <StatusBar Height="23"
+            <StatusBar Height="32"
                        Style="{DynamicResource MahApps.Styles.StatusBar}"
                        DockPanel.Dock="Bottom"
                        Visibility="{Binding Settings.DisplayDetails, Converter={StaticResource BoolToVisibilityCollapsedConverter}}"
                        VerticalAlignment="Bottom"
                        Margin="12,6,12,10"
                        Background="{Binding StatusBarBackground, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-                <StatusBarItem>
+                <StatusBarItem VerticalAlignment="Center">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Word Count: " />
                         <TextBlock Text="{Binding WordCount, UpdateSourceTrigger=PropertyChanged}" />
@@ -106,24 +107,37 @@
                 </StatusBarItem>
                 <Separator Margin="10,0,10,0"
                            HorizontalAlignment="Left" />
-                <StatusBarItem>
+                <StatusBarItem VerticalAlignment="Center">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Transparency"
+                                   VerticalAlignment="Center"
                                    Margin="0,0,10,0" />
                         <Slider Width="100"
+                                VerticalAlignment="Center"
                                 Minimum="0.3"
                                 Maximum="1"
                                 Value="{Binding TransparencyValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                        <TextBlock Margin="10,0,0,0">
+                        <TextBlock Margin="10,0,0,0"
+                                   VerticalAlignment="Center">
                             <TextBlock.Inlines>
                                 <Run Text="{Binding TransparencyInPercent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                                 <Run Text="%" />
-                            </TextBlock.Inlines>
-                        </TextBlock>
+                            </TextBlock.Inlines></TextBlock>
                     </StackPanel>
                 </StatusBarItem>
+                <Separator Margin="10,0,10,0"
+                           HorizontalAlignment="Left" />
+                <StatusBarItem VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Current Font: "
+                                   VerticalAlignment="Center"  />
+                        <ComboBox Width="140" VerticalAlignment="Center" Height="23"
+                                  ItemsSource="{Binding Fonts, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                  SelectedItem="{Binding Settings.CurrentFont, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                    </StackPanel>
+                </StatusBarItem>
+                
             </StatusBar>
-            
             <avalonedit:TextEditor x:Name="tbxMultiLine"
                                    DockPanel.Dock="Top"
                                    Margin="12,12,12,6"
@@ -136,9 +150,9 @@
                                    Foreground="{Binding MultiLineTextForegroundColor, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                    ShowLineNumbers="True"
                                    WordWrap="True"
+                                   FontFamily="{Binding Settings.CurrentFont, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                    PreviewMouseWheel="tbxMultiLine_PreviewMouseWheel" />
         </DockPanel>
-        
         <tb:TaskbarIcon IconSource=".\Clipboard.ico"
                         x:Name="TaskbarIcon"
                         Grid.RowSpan="2"

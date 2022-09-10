@@ -1,10 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Xml.Serialization;
+using DevExpress.Mvvm;
 
 namespace QuickNoteWidget
 {
-    public class Settings
+    public class Settings : BindableBase
     {
         public string SelectedThemeName { get; set; }
         public string SelectedAccentName { get; set; }
@@ -12,6 +13,14 @@ namespace QuickNoteWidget
         public bool DisplayDetails { get; set; }
         public bool ShowInTaskbar { get; set; }
         public double TransparencyValue { get; set; }
+
+        private string _currentFont;
+
+        public string CurrentFont
+        {
+            get { return _currentFont; }
+            set { SetProperty(ref _currentFont, value, () => CurrentFont); }
+        }
     }
 
     public static class SettingsLogic
