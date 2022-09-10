@@ -2,16 +2,16 @@
 A Windows Desktop Widget, build with WPF. It's basically a little notepad, where you can store Texts for later use (Like a memo). 
 You can store single line notes, multi line notes (which you can also save to and load from a text file) and create lists.
 
-![preview](https://gitlab.com/Al_develop/QuickNoteWidget/blob/master/QuickNote%201.png)
+![preview](https://github.com/al-develop/QuickNoteWidget/blob/master/QuickNote%201.png)
 
 # How to use
 The whole controlling of the UI goes over context menus. 
 You can drag around the Window with the gray border.
 Use ctrl + mouse wheel (or ctrl + +/-) to zoom in and out of the Text area. 
 
-![preview](https://gitlab.com/Al_develop/QuickNoteWidget/blob/master/QuickNote%202.png)
+![preview](https://github.com/al-develop/QuickNoteWidget/blob/master/QuickNote%202.png)
 
-![preview](https://gitlab.com/Al_develop/QuickNoteWidget/blob/master/QuickNote%203.png)
+![preview](https://github.com/al-develop/QuickNoteWidget/blob/master/QuickNote%203.png)
 
 
 # For Contributors - what is the structure of the source Code?
