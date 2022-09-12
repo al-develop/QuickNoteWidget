@@ -48,11 +48,9 @@
             <TextBlock Text="DevExpress.Mvvm"
                        Margin="25,110,0,0" />
             <TextBlock Text="Icons from Icons8"
-                       Margin="25,131,0,0" />
-            <TextBlock Text="ICSharp.AvalonEdit"
                        Margin="25,152,0,0" />
-            <TextBlock Text="Microsoft.WindowsAPICCodePack"
-                       Margin="25,173,0,0" />
+            <TextBlock Text="ICSharp.AvalonEdit"
+                       Margin="25,131,0,0" />
             <Button VerticalAlignment="Top"
                     Content="Close"
                     Style="{DynamicResource MahApps.Styles.Button.MetroSquare.Accent}"
