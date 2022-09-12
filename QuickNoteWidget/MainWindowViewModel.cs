@@ -34,12 +34,37 @@ namespace QuickNoteWidget
         private string _statusBarBackground;
         private double _transparencyValue;
         private int _transparencyInPercent;
-        private Settings _settings;
         private ObservableCollection<string> _fonts;
         private ObservableCollection<string> _themes;
         private ObservableCollection<string> _accents;
         private string _selectedTheme;
         private string _selectedAccent;
+        private bool _ontop;
+        private bool _showintaskbar;
+        private bool _displaydetails;
+        private string _currentfont;
+
+
+        public string CurrentFont
+        {
+            get { return _currentfont; }
+            set { SetProperty(ref _currentfont, value, () => CurrentFont); }
+        }
+        public bool OnTop
+        {
+            get { return _ontop; }
+            set { SetProperty(ref _ontop, value, () => OnTop); }
+        }
+        public bool DisplayDetails
+        {
+            get { return _displaydetails; }
+            set { SetProperty(ref _displaydetails, value, () => DisplayDetails); }
+        }
+        public bool ShowInTaskbar
+        {
+            get { return _showintaskbar; }
+            set { SetProperty(ref _showintaskbar, value, () => ShowInTaskbar); }
+        }
         public string SelectedAccent
         {
             get => _selectedAccent;
@@ -58,7 +83,7 @@ namespace QuickNoteWidget
                 StatusBarBackground = this.SelectedTheme == ThemeManager.BaseColorLight ? WHITE : BLACK;
                 DragAreaColor = this.SelectedTheme == ThemeManager.BaseColorLight ? LIGHT_GRAY : GRAY;
                 ThemeChanger.ChangeTheme(this.SelectedAccent, this.SelectedTheme);
-                ThemeSelectionChanged();
+                UpdateFontColorOnThemeSelectionChanged();
             }
         }
         public ObservableCollection<string> Accents
@@ -76,11 +101,6 @@ namespace QuickNoteWidget
             get { return _fonts; }
             set { SetProperty(ref _fonts, value, () => Fonts); }
         }
-        public Settings Settings
-        {
-            get { return _settings; }
-            set { SetProperty(ref _settings, value, () => Settings); }
-        }
         public int TransparencyInPercent
         {
             get { return _transparencyInPercent; }
@@ -89,8 +109,8 @@ namespace QuickNoteWidget
         public double TransparencyValue
         {
             get { return _transparencyValue; }
-            set 
-            { 
+            set
+            {
                 SetProperty(ref _transparencyValue, value, () => TransparencyValue);
                 TransparencyInPercent = (Int32)(TransparencyValue * 100);
             }
@@ -123,14 +143,17 @@ namespace QuickNoteWidget
 
         #endregion MVVM Properties
 
+
+        public Settings Settings { get; set; }
         public ICommand ClearMultiLineCommand { get; set; }
         public ICommand ResetViewCommand { get; set; }
 
 
+
         public MainWindowViewModel()
         {
-            LoadAvailableThemes();
-            LoadSettings();
+            LoadAvailableThemesAndAccents();
+            LoadSettings(SettingsLoadLocations.FromFile);
             Init();
         }
 
@@ -145,29 +168,28 @@ namespace QuickNoteWidget
 
         private IEnumerable<string> LoadInstalledFonts()
         {
-            using (var fonts = new InstalledFontCollection())            
-                foreach (FontFamily font in fonts.Families)                
-                    yield return font.Name;            
+            using (var fonts = new InstalledFontCollection())
+                foreach (FontFamily font in fonts.Families)
+                    yield return font.Name;
         }
 
         private void ClearMultiLine() => this.MultiLine = String.Empty;
 
         private void ResetView()
         {
-            this.TransparencyValue = 1;
-            this.SelectedTheme = Themes.First();
-            this.SelectedAccent = Accents.First(f => f == CYAN);
-            this.Settings.CurrentFont = Fonts.First(f => f == DEFAULT_FONT);
+            var defaultSettings = SettingsLogic.GetDefaultSettings();
+            LoadSettings(SettingsLoadLocations.Default);
         }
 
 
         #region Themes
-        private void LoadAvailableThemes()
+        private void LoadAvailableThemesAndAccents()
         {
             Themes = new ObservableCollection<string>() { ThemeManager.BaseColorLight, ThemeManager.BaseColorDark };
             Accents = new ObservableCollection<string>(ThemeManager.Current.ColorSchemes);
         }
-        private void ThemeSelectionChanged()
+
+        private void UpdateFontColorOnThemeSelectionChanged()
         {
             if (!String.IsNullOrEmpty(SelectedTheme))
                 MultiLineTextForegroundColor = SelectedTheme == ThemeManager.BaseColorLight ? BLACK : WHITE;
@@ -178,18 +200,46 @@ namespace QuickNoteWidget
 
 
         #region Settings
-        private void LoadSettings()
+        private void LoadSettings(SettingsLoadLocations location)
         {
-            this.Settings = SettingsLogic.GetSettings();
-            SelectedTheme = Themes.FirstOrDefault(f => f == this.Settings.SelectedThemeName);
-            SelectedAccent = Accents.FirstOrDefault(f => f == this.Settings.SelectedAccentName);
-            TransparencyValue = Settings.TransparencyValue;
+            InitSettingsBeforePropertiesUpdate(location);
+            UpdateProperties();
         }
+
+        private void InitSettingsBeforePropertiesUpdate(SettingsLoadLocations location)
+        {
+            switch (location)
+            {
+                case SettingsLoadLocations.FromFile:
+                    Settings = SettingsLogic.GetSettings();
+                    break;
+                case SettingsLoadLocations.Default:
+                    Settings = SettingsLogic.GetDefaultSettings();
+                    break;
+            }
+        }
+
+        private void UpdateProperties()
+        {
+            this.SelectedTheme = Themes.FirstOrDefault(f => f == this.Settings.SelectedThemeName);
+            this.SelectedAccent = Accents.FirstOrDefault(f => f == this.Settings.SelectedAccentName);
+            this.TransparencyValue = Settings.TransparencyValue;
+            this.OnTop = Settings.OnTop;
+            this.CurrentFont = Settings.CurrentFont;
+            this.DisplayDetails = Settings.DisplayDetails;
+            this.ShowInTaskbar = Settings.ShowInTaskbar;
+        }
+
+
         public void SaveSettings()
         {
             Settings.SelectedAccentName = this.SelectedAccent;
             Settings.SelectedThemeName = this.SelectedTheme;
             Settings.TransparencyValue = this.TransparencyValue;
+            Settings.OnTop = this.OnTop;
+            Settings.CurrentFont = this.CurrentFont;
+            Settings.DisplayDetails = this.DisplayDetails;
+            Settings.ShowInTaskbar = this.ShowInTaskbar;
             SettingsLogic.SaveSettings(this.Settings);
         }
 

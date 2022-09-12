@@ -105,6 +105,8 @@
       <DependentUpon>InfoWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs" />
+    <Compile Include="SettingsLoadLocations.cs" />
+    <Compile Include="SettingsLogic.cs" />
     <Compile Include="Theme\ThemeChanger.cs" />
     <Page Include="InfoWindow.xaml">
       <SubType>Designer</SubType>

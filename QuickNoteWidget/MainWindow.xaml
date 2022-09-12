@@ -13,8 +13,8 @@
         WindowStyle="None"
         Title="MainWindow"
         Height="350"
-        Topmost="{Binding Settings.OnTop}"
-        ShowInTaskbar="{Binding Settings.ShowInTaskbar}"
+        Topmost="{Binding OnTop}"
+        ShowInTaskbar="{Binding ShowInTaskbar}"
         AllowsTransparency="True"
         Opacity="{Binding TransparencyValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
         ContextMenu="{DynamicResource contextMenu}"
@@ -88,14 +88,14 @@
                               Margin="5,0,5,0"
                               Height="23"
                               ItemsSource="{Binding Fonts, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                              SelectedItem="{Binding Settings.CurrentFont, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                              SelectedItem="{Binding CurrentFont, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                 </Grid>
                 <CheckBox Content="On Top"
-                          IsChecked="{Binding Settings.OnTop}" />
+                          IsChecked="{Binding OnTop}" />
                 <CheckBox Content="Display Details"
-                          IsChecked="{Binding Settings.DisplayDetails}" />
+                          IsChecked="{Binding DisplayDetails}" />
                 <CheckBox Content="Show in Taskbar"
-                          IsChecked="{Binding Settings.ShowInTaskbar}" />
+                          IsChecked="{Binding ShowInTaskbar}" />
             </MenuItem>
             <MenuItem Header="Reset Settings"
                       Command="{Binding ResetViewCommand}" />
@@ -108,7 +108,7 @@
             <StatusBar Height="32"
                        Style="{DynamicResource MahApps.Styles.StatusBar}"
                        DockPanel.Dock="Bottom"
-                       Visibility="{Binding Settings.DisplayDetails, Converter={StaticResource BoolToVisibilityCollapsedConverter}}"
+                       Visibility="{Binding DisplayDetails, Converter={StaticResource BoolToVisibilityCollapsedConverter}}"
                        VerticalAlignment="Bottom"
                        Margin="12,6,12,10"
                        Background="{Binding StatusBarBackground, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
@@ -154,13 +154,14 @@
                                    ShowLineNumbers="True"
                                    WordWrap="True"
                                    FontSize="15"
-                                   FontFamily="{Binding Settings.CurrentFont, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                   FontFamily="{Binding CurrentFont, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                    PreviewMouseWheel="tbxMultiLine_PreviewMouseWheel" />
         </DockPanel>
+        
         <tb:TaskbarIcon IconSource=".\Clipboard.ico"
                         x:Name="TaskbarIcon"
                         Grid.RowSpan="2"
                         Grid.ColumnSpan="4"
-                        ContextMenu="{DynamicResource contextMenu}"></tb:TaskbarIcon>
+                        ContextMenu="{DynamicResource contextMenu}" />
     </Grid>
 </Window>
