@@ -6,12 +6,8 @@ namespace QuickNoteWidget
 {
     public static class SettingsLogic
     {
-        private const string CYAN = "Cyan";
-        private const string LIGHT = "Light";
-        private const string DEFAULT_FONT = "Arial";
-
         private static readonly string SettingsPath = $"{AppDomain.CurrentDomain.BaseDirectory}settings.xml";
-                
+
 
         public static void SaveSettings(Settings settings)
         {
@@ -51,24 +47,7 @@ namespace QuickNoteWidget
         }
 
 
-
-
-        public static Settings GetDefaultSettings() => new Settings()
-        {
-            SelectedAccentName = CYAN,
-            SelectedThemeName = LIGHT,
-            OnTop = true,
-            DisplayDetails = true,
-            ShowInTaskbar = true,
-            TransparencyValue = 1.0,
-            CurrentFont = DEFAULT_FONT,
-        };
-
-
-
-        private static bool DoesSettingFileExists()
-        {
-            return File.Exists(SettingsPath);
-        }
+        public static Settings GetDefaultSettings() => new Settings();
+        private static bool DoesSettingFileExists() => File.Exists(SettingsPath);
     }
 }

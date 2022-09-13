@@ -14,7 +14,7 @@ namespace QuickNoteWidget.Converter
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             TextDocument doc = new TextDocument();
-            doc.Text = (string)value;
+            doc.Text = (string)value == null ? String.Empty : value.ToString();
             return doc;
         }
 

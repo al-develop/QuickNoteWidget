@@ -19,11 +19,6 @@ namespace QuickNoteWidget
         private const string BLACK = "#252525"; // Based on Theme colord "Dark"
         private const string GRAY = "#616161";  // slightly lighter than BLACK
         private const string LIGHT_GRAY = "#EAEAEA"; // slightly darker than "WhiteSmoke"
-        private const string NORMAL = "Normal";
-        private const string ITALIC = "Italic";
-        private const string STRIKETHROUGH = "Strikethrough";
-        private const string DEFAULT_FONT = "Arial";
-        private const string CYAN = "Cyan";
         #endregion Constants
 
         #region MVVM Properties
@@ -145,7 +140,6 @@ namespace QuickNoteWidget
 
 
         public Settings Settings { get; set; }
-        public ICommand ClearMultiLineCommand { get; set; }
         public ICommand ResetViewCommand { get; set; }
 
 
@@ -160,9 +154,6 @@ namespace QuickNoteWidget
         private void Init()
         {
             ResetViewCommand = new DelegateCommand(ResetView);
-            ClearMultiLineCommand = new DelegateCommand(ClearMultiLine);
-
-            ClearMultiLine();
             Fonts = new ObservableCollection<string>(LoadInstalledFonts());
         }
 
@@ -173,11 +164,9 @@ namespace QuickNoteWidget
                     yield return font.Name;
         }
 
-        private void ClearMultiLine() => this.MultiLine = String.Empty;
-
         private void ResetView()
         {
-            var defaultSettings = SettingsLogic.GetDefaultSettings();
+            Settings defaultSettings = SettingsLogic.GetDefaultSettings();
             LoadSettings(SettingsLoadLocations.Default);
         }
 
@@ -242,7 +231,6 @@ namespace QuickNoteWidget
             Settings.ShowInTaskbar = this.ShowInTaskbar;
             SettingsLogic.SaveSettings(this.Settings);
         }
-
         #endregion Settings
     }
 }
