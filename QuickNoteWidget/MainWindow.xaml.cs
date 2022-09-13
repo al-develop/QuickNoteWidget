@@ -72,7 +72,7 @@ namespace QuickNoteWidget
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
-            _mainWindowViewModel.SaveSettings();
+            _mainWindowViewModel.SaveSettingsOnClose();
         }
 
         private void Info_Click(object sender, RoutedEventArgs e)
@@ -81,20 +81,21 @@ namespace QuickNoteWidget
             _infoWindow.Show();
         }
 
-        // React to ctrl + mouse wheel
+
         private void tbxMultiLine_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            bool ctrl = (Keyboard.Modifiers == ModifierKeys.Control);
-            if (ctrl)
+            // React to ctrl + mouse wheel
+            bool ctrlButtonPressed = (Keyboard.Modifiers == ModifierKeys.Control);
+            if (ctrlButtonPressed)
             {
-                this.UpdateFontSize(e.Delta > 0);
+                bool increase = e.Delta > 0;
+                this.UpdateFontSize(increase);
                 e.Handled = true;
             }
         }
 
-        // max and min font size values
-        private const double FONT_MAX_SIZE = 60d;
         private const double FONT_MIN_SIZE = 5d;
+        private const double FONT_MAX_SIZE = 60d;
 
         private void UpdateFontSize(bool increase)
         {

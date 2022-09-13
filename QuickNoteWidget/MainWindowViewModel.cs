@@ -148,47 +148,14 @@ namespace QuickNoteWidget
         {
             LoadAvailableThemesAndAccents();
             LoadSettings(SettingsLoadLocations.FromFile);
-            Init();
+            InitViewModel();
         }
-
-        private void Init()
-        {
-            ResetViewCommand = new DelegateCommand(ResetView);
-            Fonts = new ObservableCollection<string>(LoadInstalledFonts());
-        }
-
-        private IEnumerable<string> LoadInstalledFonts()
-        {
-            using (var fonts = new InstalledFontCollection())
-                foreach (FontFamily font in fonts.Families)
-                    yield return font.Name;
-        }
-
-        private void ResetView()
-        {
-            Settings defaultSettings = SettingsLogic.GetDefaultSettings();
-            LoadSettings(SettingsLoadLocations.Default);
-        }
-
-
-        #region Themes
         private void LoadAvailableThemesAndAccents()
         {
             Themes = new ObservableCollection<string>() { ThemeManager.BaseColorLight, ThemeManager.BaseColorDark };
             Accents = new ObservableCollection<string>(ThemeManager.Current.ColorSchemes);
         }
 
-        private void UpdateFontColorOnThemeSelectionChanged()
-        {
-            if (!String.IsNullOrEmpty(SelectedTheme))
-                MultiLineTextForegroundColor = SelectedTheme == ThemeManager.BaseColorLight ? BLACK : WHITE;
-            else
-                MultiLineTextForegroundColor = LIGHT_GRAY;
-        }
-        #endregion Themes
-
-
-        #region Settings
         private void LoadSettings(SettingsLoadLocations location)
         {
             InitSettingsBeforePropertiesUpdate(location);
@@ -219,8 +186,40 @@ namespace QuickNoteWidget
             this.ShowInTaskbar = Settings.ShowInTaskbar;
         }
 
+        private void InitViewModel()
+        {
+            Fonts = new ObservableCollection<string>(LoadInstalledFonts());
+            ResetViewCommand = new DelegateCommand(ResetView);
+        }
 
-        public void SaveSettings()
+        private IEnumerable<string> LoadInstalledFonts()
+        {
+            using (var fonts = new InstalledFontCollection())
+                foreach (FontFamily font in fonts.Families)
+                    yield return font.Name;
+        }
+
+        private void ResetView()
+        {
+            Settings defaultSettings = SettingsLogic.GetDefaultSettings();
+            LoadSettings(SettingsLoadLocations.Default);
+        }
+
+
+
+
+        private void UpdateFontColorOnThemeSelectionChanged()
+        {
+            if (!String.IsNullOrEmpty(SelectedTheme))
+                MultiLineTextForegroundColor = SelectedTheme == ThemeManager.BaseColorLight ? BLACK : WHITE;
+            else
+                MultiLineTextForegroundColor = LIGHT_GRAY;
+        }
+
+
+
+
+        public void SaveSettingsOnClose()
         {
             Settings.SelectedAccentName = this.SelectedAccent;
             Settings.SelectedThemeName = this.SelectedTheme;
@@ -231,6 +230,5 @@ namespace QuickNoteWidget
             Settings.ShowInTaskbar = this.ShowInTaskbar;
             SettingsLogic.SaveSettings(this.Settings);
         }
-        #endregion Settings
     }
 }
