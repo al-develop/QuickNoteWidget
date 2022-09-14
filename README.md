@@ -10,11 +10,15 @@ Use ctrl + mouse wheel (or ctrl + +/-) to change the font size
 
 Over the context menu, you get several options to control the behaviour of the application.
 This includes: 
-> Control whether the app should stay above all other windows.
-> Control whether the app should occupy space in the taskbar (note: if you decide to uncheck this option, you can always bring the application back ontop though a right-click on the notification/Tryicon).
-> Control about the appearance of the app: Dark/Light Themes, several accent colors and the Font can be changed.
-> Control whether to display additional information under the text, such as the Word count and also a slider to control the transparency of the application.
-> Reset all settings back to the default values.
+- Control whether the app should stay above all other windows.
+
+- Control whether the app should occupy space in the taskbar (note: if you decide to uncheck this option, you can always bring the application back ontop though a right-click on the notification/Tryicon).
+
+- Control about the appearance of the app: Dark/Light Themes, several accent colors and the Font can be changed.
+
+- Control whether to display additional information under the text, such as the Word count and also a slider to control the transparency of the application.
+
+- Reset all settings back to the default values.
 
 
 ![preview](https://github.com/al-develop/QuickNoteWidget/blob/master/QuickNote%202.png)
