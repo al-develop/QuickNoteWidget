@@ -7,6 +7,8 @@ A Windows Desktop Application, build with WPF. It's basically a little notepad, 
 The whole controlling of the UI goes over context menus. 
 You can drag the window around the screen by dragging the gray border around the text.
 Use ctrl + mouse wheel (or ctrl + +/-) to change the font size
+Use alt + h + mouse wheel to change the window height.
+Use alt + w + mouse wheel to change the window width.
 
 Over the context menu, you get several options to control the behaviour of the application.
 This includes: 
