@@ -13,12 +13,16 @@
         WindowStyle="None"
         Title="MainWindow"
         Height="350"
+        Width="600"
+        MinHeight="200"
+        MinWidth="200"
+        ResizeMode="CanResize"
         Topmost="{Binding OnTop}"
         ShowInTaskbar="{Binding ShowInTaskbar}"
         AllowsTransparency="True"
         Opacity="{Binding TransparencyValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
         ContextMenu="{DynamicResource contextMenu}"
-        Width="600">
+        >
     <Window.Resources>
         <converter:AccentToColorConverter x:Key="AccentToColorConverter" />
         <converter:StringToFontStyleConverter x:Key="fontStyle" />
@@ -27,7 +31,7 @@
         <converter:BoolToVisibilityCollapsedConverter x:Key="BoolToVisibilityCollapsedConverter" />
         <Style TargetType="TextBlock">
             <Setter Property="Foreground"
-                    Value="{Binding SelectedAccent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource AccentToColorConverter}}" />
+                    Value="{Binding SelectedAccent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource AccentToColorConverter}}" />            
         </Style>
         <ContextMenu x:Key="contextMenu">
             <MenuItem Header="Select All (Ctrl + A)"

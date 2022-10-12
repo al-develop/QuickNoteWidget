@@ -205,9 +205,6 @@ namespace QuickNoteWidget
             LoadSettings(SettingsLoadLocations.Default);
         }
 
-
-
-
         private void UpdateFontColorOnThemeSelectionChanged()
         {
             if (!String.IsNullOrEmpty(SelectedTheme))

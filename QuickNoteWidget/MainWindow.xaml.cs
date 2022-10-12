@@ -7,12 +7,12 @@ using Clipboard = System.Windows.Clipboard;
 
 namespace QuickNoteWidget
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         private MainWindowViewModel _mainWindowViewModel;
+        private const double FONT_MIN_SIZE = 5d;
+        private const double FONT_MAX_SIZE = 60d;
+        private const int WINDOW_RESIZE_FACTOR = 15;
 
         public MainWindow()
         {
@@ -81,11 +81,35 @@ namespace QuickNoteWidget
             _infoWindow.Show();
         }
 
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            bool ctrlKeyDown = GetCtrlKeyDown();
+            bool addKeyDown = GetAddKeyDown();
+            bool subtractKeyDown = GetSubtractKeyDown();
+
+            if (ctrlKeyDown && addKeyDown)
+                UpdateFontSize(true);
+            else if (ctrlKeyDown && subtractKeyDown)
+                UpdateFontSize(false);
+        }
 
         private void tbxMultiLine_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            // React to ctrl + mouse wheel
-            bool ctrlButtonPressed = (Keyboard.Modifiers == ModifierKeys.Control);
+            bool ctrlKeyDown = GetCtrlKeyDown();
+            bool altKeyDown = GetAltKeyDown();
+            bool hKeyDown = GetHKeyDown(); // h - height
+            bool wKeyDown = GetWKeyDown(); // w - Width
+
+
+            HandleFontSizeChange(e, ctrlKeyDown);
+            if (e.Handled)
+                return;
+
+            HandleWindowResize(e, altKeyDown, hKeyDown, wKeyDown);
+
+        }
+        private void HandleFontSizeChange(MouseWheelEventArgs e, bool ctrlButtonPressed)
+        {
             if (ctrlButtonPressed)
             {
                 bool increase = e.Delta > 0;
@@ -94,8 +118,49 @@ namespace QuickNoteWidget
             }
         }
 
-        private const double FONT_MIN_SIZE = 5d;
-        private const double FONT_MAX_SIZE = 60d;
+        private void HandleWindowResize(MouseWheelEventArgs e, bool altKeyDown, bool hKeyDown, bool wKeyDown)
+        {
+            if (altKeyDown && hKeyDown)
+            {
+                bool increase = e.Delta > 0;
+                double currentSize = this.Height;
+                if (increase)
+                {
+                    double newHeight = currentSize + WINDOW_RESIZE_FACTOR;
+                    this.Height = newHeight;
+                }
+                else if(this.Height > 100)
+                {
+                    double newHeight = currentSize - WINDOW_RESIZE_FACTOR;
+                    this.Height = newHeight;
+                }
+                else
+                {
+                    return;
+                }
+
+            }
+            else if (altKeyDown && wKeyDown)
+            {
+                bool increase = e.Delta > 0;
+                double currentSize = this.Width;
+                if (increase)
+                {
+                    double newWidth = currentSize + WINDOW_RESIZE_FACTOR;
+                    this.Width = newWidth;
+                }
+                else if (this.Width > 100)
+                {
+                    double newWidth = currentSize - WINDOW_RESIZE_FACTOR;
+                    this.Width = newWidth;
+                }
+                else
+                {
+                    return;
+                }
+            }
+            e.Handled = true;
+        }
 
         private void UpdateFontSize(bool increase)
         {
@@ -130,16 +195,31 @@ namespace QuickNoteWidget
                 this._mainWindowViewModel.WordCount = this.tbxMultiLine.Document.TextLength.ToString();
         }
 
-        private void Window_KeyDown(object sender, KeyEventArgs e)
+        #region GetKeyDownMethods
+        private static bool GetSubtractKeyDown()
         {
-            bool ctrlKeyDown = (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl));
-            bool addKeyDown = Keyboard.IsKeyDown(Key.Add);
-            bool subtractKeyDown = Keyboard.IsKeyDown(Key.Subtract);
-
-            if (ctrlKeyDown && addKeyDown)
-                UpdateFontSize(true);
-            else if (ctrlKeyDown && subtractKeyDown)
-                UpdateFontSize(false);
+            return Keyboard.IsKeyDown(Key.Subtract);
         }
+        private static bool GetAddKeyDown()
+        {
+            return Keyboard.IsKeyDown(Key.Add);
+        }
+        private static bool GetCtrlKeyDown()
+        {
+            return (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl));
+        }
+        private static bool GetWKeyDown()
+        {
+            return Keyboard.IsKeyDown(Key.W);
+        }
+        private static bool GetHKeyDown()
+        {
+            return Keyboard.IsKeyDown(Key.H);
+        }
+        private static bool GetAltKeyDown()
+        {
+            return (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt));
+        }
+        #endregion GetKeyDownMethods
     }
 }
