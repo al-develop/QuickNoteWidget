@@ -12,8 +12,8 @@
         KeyDown="Window_KeyDown"
         WindowStyle="None"
         Title="MainWindow"
-        Height="350"
-        Width="600"
+        Height="{Binding WindowHeight, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+        Width="{Binding WindowWidht, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
         MinHeight="200"
         MinWidth="200"
         ResizeMode="CanResize"
@@ -21,8 +21,7 @@
         ShowInTaskbar="{Binding ShowInTaskbar}"
         AllowsTransparency="True"
         Opacity="{Binding TransparencyValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-        ContextMenu="{DynamicResource contextMenu}"
-        >
+        ContextMenu="{DynamicResource contextMenu}">
     <Window.Resources>
         <converter:AccentToColorConverter x:Key="AccentToColorConverter" />
         <converter:StringToFontStyleConverter x:Key="fontStyle" />
@@ -31,7 +30,7 @@
         <converter:BoolToVisibilityCollapsedConverter x:Key="BoolToVisibilityCollapsedConverter" />
         <Style TargetType="TextBlock">
             <Setter Property="Foreground"
-                    Value="{Binding SelectedAccent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource AccentToColorConverter}}" />            
+                    Value="{Binding SelectedAccent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource AccentToColorConverter}}" />
         </Style>
         <ContextMenu x:Key="contextMenu">
             <MenuItem Header="Select All (Ctrl + A)"
@@ -81,7 +80,7 @@
                               Margin="5,0,5,0"
                               Grid.Column="1"
                               Grid.Row="1" />
-                    <TextBlock Text="Font: " 
+                    <TextBlock Text="Font: "
                                Grid.Row="2"
                                VerticalAlignment="Center" />
                     <ComboBox Width="140"
@@ -103,6 +102,9 @@
             </MenuItem>
             <MenuItem Header="Reset Settings"
                       Command="{Binding ResetViewCommand}" />
+            <CheckBox Content="Display Window Resize"
+                      ToolTip="Alt + H(eight) or Alt + W(idth) with Mouse Scrolling for more precise resizing."
+                      IsChecked="{Binding IsWindowResizeBarVisible,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
             <MenuItem Header="Info"
                       Click="Info_Click" />
         </ContextMenu>
@@ -144,6 +146,22 @@
                 </StatusBarItem>
                 <Separator Margin="10,0,10,0"
                            HorizontalAlignment="Left" />
+                <StatusBarItem Visibility="{Binding IsWindowResizeBarVisible, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource BoolToVisibilityCollapsedConverter}}">
+                    <StackPanel Orientation="Horizontal"
+                                ToolTip="Alt + H(eight) or Alt + W(idth) with Mouse Scrolling for more precise resizing.">
+                        <TextBlock Text="Window Size"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,5,0" />
+                        <StackPanel Orientation="Horizontal">
+                            <Button Content="-"
+                                    Command="{Binding ReduceWindowSizeCommand}"
+                                    Width="20" />
+                            <Button Content="+"
+                                    Command="{Binding IncreaseWindowSizeCommand}"
+                                    Width="20" />
+                        </StackPanel>
+                    </StackPanel>
+                </StatusBarItem>
             </StatusBar>
             <avalonedit:TextEditor x:Name="tbxMultiLine"
                                    DockPanel.Dock="Top"
@@ -161,7 +179,6 @@
                                    FontFamily="{Binding CurrentFont, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                    PreviewMouseWheel="tbxMultiLine_PreviewMouseWheel" />
         </DockPanel>
-        
         <tb:TaskbarIcon IconSource=".\Clipboard.ico"
                         x:Name="TaskbarIcon"
                         Grid.RowSpan="2"

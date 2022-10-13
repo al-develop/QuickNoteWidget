@@ -38,8 +38,25 @@ namespace QuickNoteWidget
         private bool _showintaskbar;
         private bool _displaydetails;
         private string _currentfont;
+        private int _windowHeight;
+        private int _windowWidht;
+        private bool _isWindowResizeBarVisible;
 
-
+        public bool IsWindowResizeBarVisible
+        {
+            get { return _isWindowResizeBarVisible; }
+            set { SetProperty(ref _isWindowResizeBarVisible, value, () => IsWindowResizeBarVisible); }
+        }
+        public int WindowWidht
+        {
+            get { return _windowWidht; }
+            set { SetProperty(ref _windowWidht, value, () => WindowWidht); }
+        }
+        public int WindowHeight
+        {
+            get { return _windowHeight; }
+            set { SetProperty(ref _windowHeight, value, () => WindowHeight); }
+        }
         public string CurrentFont
         {
             get { return _currentfont; }
@@ -140,7 +157,10 @@ namespace QuickNoteWidget
 
 
         public Settings Settings { get; set; }
+        
         public ICommand ResetViewCommand { get; set; }
+        public ICommand ReduceWindowSizeCommand { get; set; }
+        public ICommand IncreaseWindowSizeCommand { get; set; }
 
 
 
@@ -150,6 +170,8 @@ namespace QuickNoteWidget
             LoadSettings(SettingsLoadLocations.FromFile);
             InitViewModel();
         }
+
+
         private void LoadAvailableThemesAndAccents()
         {
             Themes = new ObservableCollection<string>() { ThemeManager.BaseColorLight, ThemeManager.BaseColorDark };
@@ -188,8 +210,28 @@ namespace QuickNoteWidget
 
         private void InitViewModel()
         {
+            WindowHeight = 350;
+            WindowWidht = 650;
+            IsWindowResizeBarVisible = true;
             Fonts = new ObservableCollection<string>(LoadInstalledFonts());
             ResetViewCommand = new DelegateCommand(ResetView);
+            ReduceWindowSizeCommand = new DelegateCommand(ReduceWindowSize);
+            IncreaseWindowSizeCommand = new DelegateCommand(IncreaseWindowSize);
+        }
+
+        private void ReduceWindowSize()
+        {
+            if(this.WindowHeight > 100)
+                this.WindowHeight -= 15;
+            if(IsWindowResizeBarVisible)
+                if(this.WindowWidht > 500)
+                    this.WindowWidht -= 15;
+        }
+
+        private void IncreaseWindowSize()
+        {
+            this.WindowHeight += 15;
+            this.WindowWidht += 15;
         }
 
         private IEnumerable<string> LoadInstalledFonts()
@@ -212,9 +254,6 @@ namespace QuickNoteWidget
             else
                 MultiLineTextForegroundColor = LIGHT_GRAY;
         }
-
-
-
 
         public void SaveSettingsOnClose()
         {
