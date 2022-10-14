@@ -12,8 +12,8 @@
         KeyDown="Window_KeyDown"
         WindowStyle="None"
         Title="MainWindow"
-        Height="{Binding WindowHeight, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-        Width="{Binding WindowWidht, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+        Height="350"
+        Width="650"
         MinHeight="200"
         MinWidth="200"
         ResizeMode="CanResize"
@@ -21,7 +21,8 @@
         ShowInTaskbar="{Binding ShowInTaskbar}"
         AllowsTransparency="True"
         Opacity="{Binding TransparencyValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-        ContextMenu="{DynamicResource contextMenu}">
+        ContextMenu="{DynamicResource contextMenu}"
+        PreviewMouseWheel="Window_PreviewMouseWheel">
     <Window.Resources>
         <converter:AccentToColorConverter x:Key="AccentToColorConverter" />
         <converter:StringToFontStyleConverter x:Key="fontStyle" />
@@ -99,12 +100,12 @@
                           IsChecked="{Binding DisplayDetails}" />
                 <CheckBox Content="Show in Taskbar"
                           IsChecked="{Binding ShowInTaskbar}" />
+                <CheckBox Content="Display Window Resize"
+                          ToolTip="Alt + H(eight) or Alt + W(idth) with Mouse Scrolling for more precise resizing."
+                          IsChecked="{Binding IsWindowResizeBarVisible,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
             </MenuItem>
             <MenuItem Header="Reset Settings"
                       Command="{Binding ResetViewCommand}" />
-            <CheckBox Content="Display Window Resize"
-                      ToolTip="Alt + H(eight) or Alt + W(idth) with Mouse Scrolling for more precise resizing."
-                      IsChecked="{Binding IsWindowResizeBarVisible,  UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
             <MenuItem Header="Info"
                       Click="Info_Click" />
         </ContextMenu>
@@ -154,11 +155,13 @@
                                    Margin="0,0,5,0" />
                         <StackPanel Orientation="Horizontal">
                             <Button Content="-"
-                                    Command="{Binding ReduceWindowSizeCommand}"
-                                    Width="20" />
+                                    x:Name="btnReduceWindowSize"
+                                    Width="20"
+                                    Click="btnReduceWindowSize_Click" />
                             <Button Content="+"
-                                    Command="{Binding IncreaseWindowSizeCommand}"
-                                    Width="20" />
+                                    x:Name="btnIncreaseWindowSize"
+                                    Width="20"
+                                    Click="btnIncreaseWindowSize_Click" />
                         </StackPanel>
                     </StackPanel>
                 </StatusBarItem>
@@ -182,7 +185,7 @@
         <tb:TaskbarIcon IconSource=".\Clipboard.ico"
                         x:Name="TaskbarIcon"
                         Grid.RowSpan="2"
-                        Grid.ColumnSpan="4"
+                        Grid.ColumnSpan="4" Width="0.5" Height="0.5" VerticalAlignment="Bottom" HorizontalAlignment="Right"
                         ContextMenu="{DynamicResource contextMenu}" />
     </Grid>
 </Window>

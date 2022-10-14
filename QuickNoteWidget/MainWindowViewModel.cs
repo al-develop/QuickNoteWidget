@@ -38,24 +38,12 @@ namespace QuickNoteWidget
         private bool _showintaskbar;
         private bool _displaydetails;
         private string _currentfont;
-        private int _windowHeight;
-        private int _windowWidht;
         private bool _isWindowResizeBarVisible;
 
         public bool IsWindowResizeBarVisible
         {
             get { return _isWindowResizeBarVisible; }
             set { SetProperty(ref _isWindowResizeBarVisible, value, () => IsWindowResizeBarVisible); }
-        }
-        public int WindowWidht
-        {
-            get { return _windowWidht; }
-            set { SetProperty(ref _windowWidht, value, () => WindowWidht); }
-        }
-        public int WindowHeight
-        {
-            get { return _windowHeight; }
-            set { SetProperty(ref _windowHeight, value, () => WindowHeight); }
         }
         public string CurrentFont
         {
@@ -159,9 +147,9 @@ namespace QuickNoteWidget
         public Settings Settings { get; set; }
         
         public ICommand ResetViewCommand { get; set; }
-        public ICommand ReduceWindowSizeCommand { get; set; }
-        public ICommand IncreaseWindowSizeCommand { get; set; }
 
+        // Callback Action to the view, with loose coupling
+        public Action ResetWindowSizeAction;
 
 
         public MainWindowViewModel()
@@ -206,33 +194,27 @@ namespace QuickNoteWidget
             this.CurrentFont = Settings.CurrentFont;
             this.DisplayDetails = Settings.DisplayDetails;
             this.ShowInTaskbar = Settings.ShowInTaskbar;
+            this.IsWindowResizeBarVisible = Settings.WindowResizeBarVisible;
+        }
+
+        public void SaveSettingsOnClose()
+        {
+            Settings.SelectedAccentName = this.SelectedAccent;
+            Settings.SelectedThemeName = this.SelectedTheme;
+            Settings.TransparencyValue = this.TransparencyValue;
+            Settings.OnTop = this.OnTop;
+            Settings.CurrentFont = this.CurrentFont;
+            Settings.DisplayDetails = this.DisplayDetails;
+            Settings.ShowInTaskbar = this.ShowInTaskbar;
+            Settings.WindowResizeBarVisible = this.IsWindowResizeBarVisible;
+            SettingsLogic.SaveSettings(this.Settings);
         }
 
         private void InitViewModel()
         {
-            WindowHeight = 350;
-            WindowWidht = 650;
-            IsWindowResizeBarVisible = true;
             Fonts = new ObservableCollection<string>(LoadInstalledFonts());
             ResetViewCommand = new DelegateCommand(ResetView);
-            ReduceWindowSizeCommand = new DelegateCommand(ReduceWindowSize);
-            IncreaseWindowSizeCommand = new DelegateCommand(IncreaseWindowSize);
-        }
-
-        private void ReduceWindowSize()
-        {
-            if(this.WindowHeight > 100)
-                this.WindowHeight -= 15;
-            if(IsWindowResizeBarVisible)
-                if(this.WindowWidht > 500)
-                    this.WindowWidht -= 15;
-        }
-
-        private void IncreaseWindowSize()
-        {
-            this.WindowHeight += 15;
-            this.WindowWidht += 15;
-        }
+        }       
 
         private IEnumerable<string> LoadInstalledFonts()
         {
@@ -245,6 +227,7 @@ namespace QuickNoteWidget
         {
             Settings defaultSettings = SettingsLogic.GetDefaultSettings();
             LoadSettings(SettingsLoadLocations.Default);
+            ResetWindowSizeAction.Invoke();
         }
 
         private void UpdateFontColorOnThemeSelectionChanged()
@@ -253,18 +236,6 @@ namespace QuickNoteWidget
                 MultiLineTextForegroundColor = SelectedTheme == ThemeManager.BaseColorLight ? BLACK : WHITE;
             else
                 MultiLineTextForegroundColor = LIGHT_GRAY;
-        }
-
-        public void SaveSettingsOnClose()
-        {
-            Settings.SelectedAccentName = this.SelectedAccent;
-            Settings.SelectedThemeName = this.SelectedTheme;
-            Settings.TransparencyValue = this.TransparencyValue;
-            Settings.OnTop = this.OnTop;
-            Settings.CurrentFont = this.CurrentFont;
-            Settings.DisplayDetails = this.DisplayDetails;
-            Settings.ShowInTaskbar = this.ShowInTaskbar;
-            SettingsLogic.SaveSettings(this.Settings);
         }
     }
 }

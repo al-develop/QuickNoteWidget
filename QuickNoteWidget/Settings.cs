@@ -11,5 +11,6 @@ namespace QuickNoteWidget
         public bool ShowInTaskbar { get; set; } = true;
         public double TransparencyValue { get; set; } = 1;
         public string CurrentFont { get; set; } = "Arial";
+        public bool WindowResizeBarVisible { get; set; } = true;
     }
 }

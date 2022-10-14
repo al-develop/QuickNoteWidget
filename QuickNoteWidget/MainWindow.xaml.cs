@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
+using DevExpress.Mvvm.Native;
 using Application = System.Windows.Application;
 using Clipboard = System.Windows.Clipboard;
 
@@ -13,29 +14,23 @@ namespace QuickNoteWidget
         private const double FONT_MIN_SIZE = 5d;
         private const double FONT_MAX_SIZE = 60d;
         private const int WINDOW_RESIZE_FACTOR = 15;
+        private const int MIN_WINDOW_HEIGHT = 100;
+        private const int MIN_WINDOW_WIDTH = 470;
 
         public MainWindow()
         {
             InitializeComponent();
             DataContext = _mainWindowViewModel = new MainWindowViewModel();
             tbxMultiLine.Focus();
+            _mainWindowViewModel.ResetWindowSizeAction = new Action(ResetWindowSize);
         }
 
+        #region Context Menu Events
+        private void contextClose_Click(object sender, RoutedEventArgs e) => Application.Current.Shutdown();
 
-        private void contextClose_Click(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
-        }
+        private void contextMaximize_Click(object sender, RoutedEventArgs e) => WindowState = WindowState.Normal;
 
-        private void contextMaximize_Click(object sender, RoutedEventArgs e)
-        {
-            WindowState = WindowState.Normal;
-        }
-
-        private void contextMinimize_Click(object sender, RoutedEventArgs e)
-        {
-            WindowState = WindowState.Minimized;
-        }
+        private void contextMinimize_Click(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
 
         private void contextAdd_Click(object sender, RoutedEventArgs e)
         {
@@ -54,7 +49,7 @@ namespace QuickNoteWidget
             else
                 Clipboard.SetText(this.tbxMultiLine.SelectedText);
         }
-        
+
         private void contextSelect_Click(object sender, RoutedEventArgs e)
         {
             if (String.IsNullOrEmpty(this.tbxMultiLine.Text))
@@ -80,6 +75,9 @@ namespace QuickNoteWidget
             var _infoWindow = new InfoWindow(_mainWindowViewModel.SelectedAccent ?? "Cyan");
             _infoWindow.Show();
         }
+        #endregion
+
+
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
@@ -96,18 +94,12 @@ namespace QuickNoteWidget
         private void tbxMultiLine_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
             bool ctrlKeyDown = GetCtrlKeyDown();
-            bool altKeyDown = GetAltKeyDown();
-            bool hKeyDown = GetHKeyDown(); // h - height
-            bool wKeyDown = GetWKeyDown(); // w - Width
-
 
             HandleFontSizeChange(e, ctrlKeyDown);
             if (e.Handled)
                 return;
-
-            HandleWindowResize(e, altKeyDown, hKeyDown, wKeyDown);
-
         }
+
         private void HandleFontSizeChange(MouseWheelEventArgs e, bool ctrlButtonPressed)
         {
             if (ctrlButtonPressed)
@@ -116,50 +108,6 @@ namespace QuickNoteWidget
                 this.UpdateFontSize(increase);
                 e.Handled = true;
             }
-        }
-
-        private void HandleWindowResize(MouseWheelEventArgs e, bool altKeyDown, bool hKeyDown, bool wKeyDown)
-        {
-            if (altKeyDown && hKeyDown)
-            {
-                bool increase = e.Delta > 0;
-                double currentSize = this.Height;
-                if (increase)
-                {
-                    double newHeight = currentSize + WINDOW_RESIZE_FACTOR;
-                    this.Height = newHeight;
-                }
-                else if(this.Height > 100)
-                {
-                    double newHeight = currentSize - WINDOW_RESIZE_FACTOR;
-                    this.Height = newHeight;
-                }
-                else
-                {
-                    return;
-                }
-
-            }
-            else if (altKeyDown && wKeyDown)
-            {
-                bool increase = e.Delta > 0;
-                double currentSize = this.Width;
-                if (increase)
-                {
-                    double newWidth = currentSize + WINDOW_RESIZE_FACTOR;
-                    this.Width = newWidth;
-                }
-                else if (this.Width > 100)
-                {
-                    double newWidth = currentSize - WINDOW_RESIZE_FACTOR;
-                    this.Width = newWidth;
-                }
-                else
-                {
-                    return;
-                }
-            }
-            e.Handled = true;
         }
 
         private void UpdateFontSize(bool increase)
@@ -185,41 +133,98 @@ namespace QuickNoteWidget
         }
 
 
+
+
+        private void Window_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            bool altKeyDown = GetAltKeyDown();
+            bool hKeyDown = GetHKeyDown(); // h - height
+            bool wKeyDown = GetWKeyDown(); // w - Width
+
+            // mouse wheel up equals e.Delta higher than 0
+            // mouse wheel down equals e.Delta smaller than 0
+            bool increase = e.Delta > 0;
+
+            HandleWindowResize(increase, altKeyDown, hKeyDown, wKeyDown);
+        }
+
+        private void HandleWindowResize(bool increase, bool altKeyDown, bool hKeyDown, bool wKeyDown)
+        {
+            if (altKeyDown && hKeyDown)
+                ResizeHeight(increase);
+            else if (altKeyDown && wKeyDown)
+                ResizeWidth(increase);
+        }
+
+
+        private void ResizeHeight(bool increase)
+        {
+            if (increase)
+                IncreaseHeight();
+            else if (this.Height > MIN_WINDOW_HEIGHT)
+                DecreaseHeight();
+        }
+
+        private void IncreaseHeight() => this.Height += WINDOW_RESIZE_FACTOR;
+        
+
+        private void DecreaseHeight() => this.Height -= WINDOW_RESIZE_FACTOR;
+        
+
+
+
+        private void ResizeWidth(bool increase)
+        {
+            if (increase)
+                IncreaseWidth();
+            else if (this.Width > MIN_WINDOW_WIDTH)
+                DecreaseWidth();
+        }
+
+        private void IncreaseWidth() => this.Width += WINDOW_RESIZE_FACTOR;
+
+        private void DecreaseWidth() => this.Width -= WINDOW_RESIZE_FACTOR;
+
+        private void btnIncreaseWindowSize_Click(object sender, RoutedEventArgs e)
+        {
+            ResizeHeight(increase: true);
+            ResizeWidth(increase: true);
+        }
+
+        private void btnReduceWindowSize_Click(object sender, RoutedEventArgs e)
+        {
+            ResizeHeight(increase: false);
+            ResizeWidth(increase: false);
+        }
+
+
+
+
         /// <summary>
         /// The "Document" Property of the Avalon TextEdit does not notify back to the VM
         /// Therefore, it's necessary to catch the Textchanged event in order to update the WordCount
         /// </summary>
         private void TbxMultiLine_TextChanged(object sender, EventArgs e)
         {
-            if(_mainWindowViewModel != null)
+            if (_mainWindowViewModel != null)
                 this._mainWindowViewModel.WordCount = this.tbxMultiLine.Document.TextLength.ToString();
         }
 
+
+        private void ResetWindowSize()
+        {
+            this.Width = 650;
+            this.Height = 350;
+        }
+
+
         #region GetKeyDownMethods
-        private static bool GetSubtractKeyDown()
-        {
-            return Keyboard.IsKeyDown(Key.Subtract);
-        }
-        private static bool GetAddKeyDown()
-        {
-            return Keyboard.IsKeyDown(Key.Add);
-        }
-        private static bool GetCtrlKeyDown()
-        {
-            return (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl));
-        }
-        private static bool GetWKeyDown()
-        {
-            return Keyboard.IsKeyDown(Key.W);
-        }
-        private static bool GetHKeyDown()
-        {
-            return Keyboard.IsKeyDown(Key.H);
-        }
-        private static bool GetAltKeyDown()
-        {
-            return (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt));
-        }
+        private static bool GetSubtractKeyDown() => Keyboard.IsKeyDown(Key.Subtract);
+        private static bool GetAddKeyDown() => Keyboard.IsKeyDown(Key.Add);
+        private static bool GetCtrlKeyDown() => (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl));
+        private static bool GetWKeyDown() => Keyboard.IsKeyDown(Key.W);
+        private static bool GetHKeyDown() => Keyboard.IsKeyDown(Key.H);
+        private static bool GetAltKeyDown() => (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt));
         #endregion GetKeyDownMethods
     }
 }
