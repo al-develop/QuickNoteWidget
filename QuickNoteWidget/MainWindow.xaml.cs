@@ -1,7 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using DevExpress.Mvvm.Native;
+using Ookii.Dialogs.Wpf;
 using Application = System.Windows.Application;
 using Clipboard = System.Windows.Clipboard;
 
@@ -26,6 +28,18 @@ namespace QuickNoteWidget
         }
 
         #region Context Menu Events
+
+        private void contextSave_Click(object sender, RoutedEventArgs e)
+        {
+            string content = this.tbxMultiLine.Document.Text;
+            var dialog = new VistaSaveFileDialog();
+            dialog.ShowDialog();
+            string fileName = dialog.FileName;
+            FileStream stream = File.Create(fileName);
+            stream.Close();
+            File.WriteAllText(fileName, content);
+        }
+        
         private void contextClose_Click(object sender, RoutedEventArgs e) => Application.Current.Shutdown();
 
         private void contextMaximize_Click(object sender, RoutedEventArgs e) => WindowState = WindowState.Normal;

@@ -40,6 +40,8 @@
                       Click="contextAdd_Click" />
             <MenuItem Header="Copy (Ctrl + C)"
                       Click="contextCopy_Click" />
+            <MenuItem Header="Save To File (Ctrl + S)"
+                      Click="contextSave_Click" />
             <Separator />
             <MenuItem Header="Minimize"
                       Click="contextMinimize_Click" />
