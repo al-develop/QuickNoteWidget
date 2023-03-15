@@ -24,7 +24,7 @@ namespace QuickNoteWidget
         #region MVVM Properties
         private string _multiLine;
         private string _multiLineTextForegroundColor;
-        private string _wordCount;
+        private string _characterCount;
         private string _dragAreaColor;
         private string _statusBarBackground;
         private double _transparencyValue;
@@ -125,10 +125,10 @@ namespace QuickNoteWidget
             get => _dragAreaColor;
             set => SetProperty(ref _dragAreaColor, value, () => DragAreaColor);
         }
-        public string WordCount
+        public string CharacterCount
         {
-            get => _wordCount;
-            set => SetProperty(ref _wordCount, value, () => WordCount);
+            get => _characterCount;
+            set => SetProperty(ref _characterCount, value, () => CharacterCount);
         }
         public string MultiLineTextForegroundColor
         {

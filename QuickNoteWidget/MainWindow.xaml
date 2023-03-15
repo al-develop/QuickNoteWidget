@@ -123,8 +123,8 @@
                        Background="{Binding StatusBarBackground, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                 <StatusBarItem VerticalAlignment="Center">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Word Count: " />
-                        <TextBlock Text="{Binding WordCount, UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Text="Character Count: " />
+                        <TextBlock Text="{Binding CharacterCount, UpdateSourceTrigger=PropertyChanged}" />
                     </StackPanel>
                 </StatusBarItem>
                 <Separator Margin="10,0,10,0"

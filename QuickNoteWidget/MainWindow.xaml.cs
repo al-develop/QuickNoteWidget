@@ -216,12 +216,12 @@ namespace QuickNoteWidget
 
         /// <summary>
         /// The "Document" Property of the Avalon TextEdit does not notify back to the VM
-        /// Therefore, it's necessary to catch the Textchanged event in order to update the WordCount
+        /// Therefore, it's necessary to catch the Textchanged event in order to update the CharacterCount
         /// </summary>
         private void TbxMultiLine_TextChanged(object sender, EventArgs e)
         {
             if (_mainWindowViewModel != null)
-                this._mainWindowViewModel.WordCount = this.tbxMultiLine.Document.TextLength.ToString();
+                this._mainWindowViewModel.CharacterCount = this.tbxMultiLine.Document.TextLength.ToString();
         }
 
 
